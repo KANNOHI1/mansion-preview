@@ -128,6 +128,14 @@
         line-height: 1.55;
       }
 
+      .range {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
       .grid {
         display: grid;
         grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
@@ -246,31 +254,32 @@
         <p class="eyebrow">Owner command dashboard</p>
         <h1>資産判断の<br />公開プレビュー</h1>
         <p class="lead">
-          個人情報を出さずに、画面構成と情報の見え方だけをスマホで確認するための軽量版です。
-          実データはローカルアプリ側で管理し、このページには出しません。
+          住所・マンション名・部屋番号は出さずに、判断に必要な実額だけをスマホで確認するための軽量版です。
+          リンクを知っている人は閲覧できるため、物件特定情報は引き続き非公開にしています。
         </p>
       </section>
 
       <section class="kpis" aria-label="主要指標">
         <article class="card">
-          <span>売却レンジ</span>
-          <strong>非公開</strong>
-          <p>実額はローカル版で確認。公開版では構造だけ表示。</p>
+          <span>推定成約価格</span>
+          <strong>128,490,624円</strong>
+          <p>標準売却の中心値。</p>
+          <em class="range">早期 124,635,905円 / 強気 134,915,155円</em>
+        </article>
+        <article class="card">
+          <span>標準手残り</span>
+          <strong>39,380,562円</strong>
+          <p>売却費用・ローン控除後の管理用概算。</p>
         </article>
         <article class="card">
           <span>ローン残債</span>
-          <strong>非公開</strong>
-          <p>月次概算ロジックはローカル版で保持。</p>
+          <strong>78,584,139円</strong>
+          <p>2026-05-02基準。月額 221,073円。</p>
         </article>
         <article class="card">
-          <span>確認済み</span>
-          <strong>固定費</strong>
-          <p>税額、管理費等、購入時支出の一部を確認済み。</p>
-        </article>
-        <article class="card">
-          <span>概算扱い</span>
-          <strong>税務</strong>
-          <p>土地/建物内訳と減価償却は未確認。</p>
+          <span>固定費</span>
+          <strong>554,340円/年</strong>
+          <p>管理・修繕 32,620円/月 + 固定資産税等 162,900円/年。</p>
         </article>
       </section>
 
@@ -280,15 +289,19 @@
           <div class="rows">
             <div class="row">
               <span>購入価格・ローン条件</span>
-              <strong class="ok">確認済み / ローカルのみ</strong>
+              <strong class="ok">79,800,000円 / 84,300,000円</strong>
             </div>
             <div class="row">
               <span>固定資産税・都市計画税</span>
-              <strong class="ok">確認済み / ローカルのみ</strong>
+              <strong class="ok">162,900円/年</strong>
             </div>
             <div class="row">
               <span>管理費・修繕積立金</span>
-              <strong class="ok">合計確認済み</strong>
+              <strong class="ok">32,620円/月</strong>
+            </div>
+            <div class="row">
+              <span>購入時支出の確認済み小計</span>
+              <strong class="ok">2,545,700円</strong>
             </div>
             <div class="row">
               <span>土地/建物内訳</span>
@@ -322,7 +335,7 @@
             </div>
           </div>
           <p class="footnote">
-            このページはリンク確認用です。正確な金額、住所、部屋番号、ローン残債は公開しません。
+            このページはリンク確認用です。金額は表示しますが、住所、マンション名、部屋番号は公開しません。
           </p>
           <p class="tagline">GitHub Pages preview</p>
         </aside>

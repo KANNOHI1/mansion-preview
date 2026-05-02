@@ -4,787 +4,486 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Asset Command — B. Schematic (Noto Sans)</title>
+  <title>資産 — Asset Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4f4f4;
-      --paper: #ffffff;
-      --ink: #161616;
-      --ink-soft: #393939;
-      --body: #525252;
-      --muted: #6f6f6f;
-      --whisper: #a8a8a8;
-      --rule: #e0e0e0;
-      --rule-strong: #c6c6c6;
-      --blue: #0f62fe;
-      --blue-soft: #d0e2ff;
-      --red: #da1e28;
-      --green: #198038;
-      --orange: #d2a106;
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --label: #3c3c43;
+      --label-2: rgba(60,60,67,0.6);
+      --label-3: rgba(60,60,67,0.4);
+      --hairline: #d2d2d7;
+      --hairline-soft: #e5e5ea;
+      --blue: #007aff;
+      --blue-soft: #e5f0ff;
+      --green: #34c759;
+      --red: #ff3b30;
+      --gray: #8e8e93;
+      --ink: #1c1c1e;
+      --radius: 14px;
+      --pad: 16px;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
       min-height: 100vh;
       background: var(--bg);
-      color: var(--body);
-      font-family: "Noto Sans", "Noto Sans JP", -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
-      font-weight: 400;
+      color: var(--label);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter",
+                   "Hiragino Kaku Gothic ProN", "Yu Gothic",
+                   "Noto Sans JP", sans-serif;
+      font-feature-settings: "tnum" 1;
       -webkit-font-smoothing: antialiased;
       letter-spacing: 0;
-    }
-    .mono {
-      font-family: "Noto Sans Mono", "SF Mono", monospace;
-      font-feature-settings: "tnum" 1;
+      line-height: 1.4;
     }
     main {
-      max-width: 940px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 0;
-    }
-    .ribbon {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 20px;
-      padding: 14px 24px;
-      background: var(--ink);
-      color: #fff;
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      align-items: center;
-    }
-    .ribbon .id {
+      padding: 36px 16px 48px;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
+      flex-direction: column;
+      gap: 24px;
     }
-    .ribbon .id::before {
-      content: "";
-      width: 14px; height: 14px;
-      background: var(--blue);
-      display: inline-block;
-    }
-    .ribbon .ticker {
+
+    /* ① Page header */
+    .page-head {
       display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-      color: var(--whisper);
-    }
-    .ribbon .ticker span b { color: #fff; font-weight: 500; margin-left: 6px; }
-    .ribbon .ts { color: var(--whisper); white-space: nowrap; }
-    @media (max-width: 720px) {
-      .ribbon { grid-template-columns: 1fr; gap: 8px; padding: 12px 18px; }
-      .ribbon .ticker { font-size: 10px; gap: 12px; }
-    }
-    .frame {
-      background: var(--paper);
-      padding: 56px 24px 48px;
-    }
-    @media (max-width: 540px) { .frame { padding: 36px 18px 36px; } }
-    .grid12 {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
-    }
-    .cell { background: var(--paper); padding: 18px 18px 18px; }
-    .cell.span12 { grid-column: span 12; }
-    .cell.span8 { grid-column: span 8; }
-    .cell.span6 { grid-column: span 6; }
-    .cell.span4 { grid-column: span 4; }
-    .cell.span3 { grid-column: span 3; }
-    @media (max-width: 720px) {
-      .cell.span8, .cell.span6, .cell.span4 { grid-column: span 12; }
-      .cell.span3 { grid-column: span 6; }
-      .breakdown, .ev-cell { grid-column: span 12; }
-    }
-    .label-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      align-items: center;
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .label-row .tag {
-      padding: 2px 6px;
-      background: var(--ink);
-      color: #fff;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-    }
-    .label-row .tag.blue { background: var(--blue); }
-    .label-row .tag.red { background: var(--red); }
-    .label-row .tag.green { background: var(--green); }
-    .label-row .ref { color: var(--whisper); margin-left: auto; font-weight: 400; }
-    .hero-cell {
-      grid-column: span 12;
-      padding: 36px 28px 32px;
-    }
-    @media (max-width: 540px) { .hero-cell { padding: 28px 18px 24px; } }
-    .hero-cell .head {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 18px;
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .hero-cell .head .tag { padding: 3px 8px; background: var(--blue); color: #fff; font-weight: 500; }
-    .hero-cell .figure {
-      margin: 0;
-      font-family: "Noto Sans", sans-serif;
-      font-weight: 300;
-      font-size: clamp(56px, 11vw, 96px);
-      line-height: 0.96;
-      letter-spacing: -0.04em;
-      color: var(--ink);
-      font-feature-settings: "tnum" 1;
-    }
-    .hero-cell .figure .yen {
-      font-family: "Noto Sans Mono", monospace;
-      font-weight: 300;
-      font-size: 0.45em;
-      vertical-align: 0.55em;
-      margin-right: 0.1em;
-      color: var(--ink-soft);
-    }
-    .hero-cell .figure-label {
-      margin: 8px 0 0;
-      font-family: "Noto Sans JP", sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      color: var(--body);
-    }
-    .hero-cell .deltas {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      border-top: 1px solid var(--rule);
-    }
-    .hero-cell .deltas .d {
-      background: var(--paper);
-      padding: 14px 0 4px;
-    }
-    .hero-cell .deltas .d .k {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .hero-cell .deltas .d .v {
-      font-family: "Noto Sans", sans-serif;
-      font-weight: 500;
-      font-size: 18px;
-      color: var(--ink);
-      font-feature-settings: "tnum" 1;
-    }
-    .hero-cell .deltas .d.up .v { color: var(--green); }
-    .hero-cell .deltas .d.down .v { color: var(--red); }
-    .kpi {
-      padding: 16px 18px;
-    }
-    .kpi .k {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 8px;
-    }
-    .kpi .v {
-      margin: 0;
-      font-family: "Noto Sans", sans-serif;
-      font-weight: 400;
-      font-size: 20px;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      font-feature-settings: "tnum" 1;
-    }
-    .kpi .v .yen {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 0.65em;
-      color: var(--ink-soft);
-      margin-right: 2px;
-    }
-    .kpi .n {
-      margin: 6px 0 0;
-      font-family: "Noto Sans JP", sans-serif;
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .section-title {
-      grid-column: span 12;
-      padding: 24px 18px 12px;
-      background: var(--paper);
-      display: flex;
-      justify-content: space-between;
       align-items: baseline;
-      border-bottom: 1px solid var(--rule);
-    }
-    .section-title h2 {
-      margin: 0;
-      font-family: "Noto Sans", sans-serif;
-      font-weight: 500;
-      font-size: 16px;
-      color: var(--ink);
-      letter-spacing: -0.005em;
-    }
-    .section-title h2 small {
-      display: block;
-      font-family: "Noto Sans Mono", monospace;
-      font-weight: 400;
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      justify-content: space-between;
+      padding: 0 4px;
       margin-bottom: 4px;
     }
-    .section-title .meta {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .scen {
-      grid-column: span 12;
-      padding: 18px;
-      display: grid;
-      gap: 10px;
-    }
-    .scen-card {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 6px 16px;
-      padding: 16px 18px;
-      background: var(--paper);
-      border: 1px solid var(--rule);
-    }
-    .scen-card.std { background: #f0f7ff; border-color: var(--blue); }
-    .scen-card .name {
-      font-family: "Noto Sans JP", sans-serif;
-      font-weight: 600;
-      font-size: 15px;
+    .page-head .title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: var(--ink);
     }
-    .scen-card .mult {
-      font-family: "Noto Sans Mono", monospace;
+    .page-head .date {
       font-size: 13px;
-      color: var(--muted);
+      font-weight: 500;
+      color: var(--label-2);
+      font-feature-settings: "tnum" 1;
+    }
+
+    /* Card common */
+    .card {
+      background: var(--card);
+      border: 0.5px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: var(--pad);
+    }
+    .sec-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--label-2);
+      letter-spacing: 0.01em;
+      margin: 0 0 8px;
+    }
+    .row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-top: 0.5px solid var(--hairline-soft);
+      gap: 12px;
+    }
+    .row:first-of-type { border-top: 0.5px solid var(--hairline); }
+    .row .lab {
+      font-size: 15px;
+      color: var(--label);
+    }
+    .row .val {
+      font-size: 15px;
+      color: var(--ink);
+      font-feature-settings: "tnum" 1;
       text-align: right;
     }
-    .scen-card.std .mult { color: var(--blue); font-weight: 500; }
-    .scen-card .desc {
-      grid-column: 1 / -1;
-      font-family: "Noto Sans JP", sans-serif;
-      font-size: 11px;
-      color: var(--muted);
+    .row.total {
+      border-top: 0.5px solid var(--hairline);
+      padding-top: 14px;
+      margin-top: 4px;
     }
-    .scen-card .vals {
-      grid-column: 1 / -1;
+    .row.total .lab { font-weight: 600; color: var(--ink); }
+    .row.total .val { font-weight: 600; color: var(--blue); font-size: 17px; }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+
+    /* ② Hero */
+    .hero .figure {
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.05;
+      margin: 4px 0 8px;
+      font-feature-settings: "tnum" 1;
+    }
+    .hero .delta {
+      font-size: 15px;
+      color: var(--green);
+      font-weight: 500;
+      margin-bottom: 14px;
+      font-feature-settings: "tnum" 1;
+    }
+    .hero .delta .delta-lab {
+      color: var(--label-2);
+      font-weight: 400;
+      margin-left: 8px;
+    }
+    .hero .rows { margin-top: 4px; }
+
+    /* ③ KPI 2×2 */
+    .kpi-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      padding-top: 10px;
-      margin-top: 4px;
-      border-top: 1px solid var(--rule);
     }
-    .scen-card.std .vals { border-top-color: rgba(15, 98, 254, 0.25); }
-    .scen-card .v-block .lab {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .kpi {
+      background: var(--card);
+      border: 0.5px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 14px 16px;
     }
-    .scen-card .v-block .val {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--ink);
-      margin-top: 2px;
-      font-feature-settings: "tnum" 1;
+    .kpi .lab {
+      font-size: 13px;
+      color: var(--label-2);
+      margin-bottom: 6px;
     }
-    .scen-card.std .v-block .val { color: var(--blue); }
-    .breakdown {
-      grid-column: span 6;
-      padding: 18px;
-    }
-    .bd { list-style: none; padding: 0; margin: 0; }
-    .bd-row {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--rule);
-    }
-    .bd-row:last-child { border-bottom: none; }
-    .bd-lab {
-      font-family: "Noto Sans JP", sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .bd-val {
-      font-family: "Noto Sans Mono", monospace;
-      font-feature-settings: "tnum" 1;
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--ink);
-      letter-spacing: -0.005em;
-    }
-    .bd-row.pos .bd-val { color: var(--green); }
-    .bd-row.neg .bd-val { color: var(--red); }
-    .bd-row.total {
-      border-top: 2px solid var(--ink);
-      border-bottom: none;
-      padding-top: 16px;
-      margin-top: 4px;
-    }
-    .bd-row.total .bd-lab { color: var(--ink); font-weight: 600; }
-    .bd-row.total .bd-val {
-      font-family: "Noto Sans", sans-serif;
+    .kpi .val {
       font-size: 22px;
-      font-weight: 400;
+      font-weight: 600;
       color: var(--ink);
+      letter-spacing: -0.01em;
+      font-feature-settings: "tnum" 1;
     }
-    .ev-cell {
-      grid-column: span 6;
-      padding: 18px;
-    }
-    .ev {
+
+    /* ④ Scenarios */
+    .scen-row {
       display: grid;
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
-      margin-bottom: 16px;
+      grid-template-columns: auto 1fr;
+      column-gap: 16px;
+      row-gap: 4px;
+      padding: 14px 0;
+      border-top: 0.5px solid var(--hairline-soft);
     }
-    .ev .e {
-      background: var(--paper);
-      padding: 12px 14px;
+    .scen-row:first-of-type { border-top: 0.5px solid var(--hairline); }
+    .scen-row .name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      grid-row: 1;
     }
-    .ev .e.selected {
-      background: var(--blue-soft);
-      border-left: 3px solid var(--blue);
+    .scen-row.std .name { color: var(--blue); font-weight: 600; }
+    .scen-row .mult {
+      font-size: 13px;
+      color: var(--label-2);
+      grid-row: 1;
+      align-self: baseline;
     }
-    .ev .e .lab { font-family: "Noto Sans Mono", monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-    .ev .e .pp { font-family: "Noto Sans", sans-serif; font-weight: 500; font-size: 16px; color: var(--ink); margin-top: 4px; }
-    .ev .e .nt { font-family: "Noto Sans JP", sans-serif; font-size: 11px; color: var(--muted); margin-top: 4px; }
-    .flow {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 11px;
+    .scen-row.std .mult { color: var(--blue); }
+    .scen-row .v {
+      grid-column: 2;
+      font-size: 14px;
+      text-align: right;
+      font-feature-settings: "tnum" 1;
     }
-    .flow .fr {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      padding: 6px 0;
-      border-bottom: 1px solid var(--rule);
-      gap: 12px;
-      align-items: baseline;
+    .scen-row .v .vlab {
+      color: var(--label-2);
+      margin-right: 8px;
+      font-size: 12px;
     }
-    .flow .fr .label { color: var(--muted); }
-    .flow .fr .val { color: var(--ink); font-weight: 500; }
-    .flow .fr.total { border-top: 1px solid var(--ink); padding-top: 10px; margin-top: 6px; border-bottom: none; }
-    .flow .fr.total .val { color: var(--blue); font-size: 13px; }
-    .chart-cell {
-      grid-column: span 12;
-      padding: 24px 28px 28px;
-    }
-    .chart-cell .axes {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: baseline;
-      margin-bottom: 14px;
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .chart-cell svg { width: 100%; height: auto; display: block; }
-    .chart-panel + .chart-panel { border-top: 1px solid var(--rule); }
-    .chart-panel .panel-head {
+    .scen-row .v .vnum { color: var(--ink); }
+    .scen-row.std .v .vnum { color: var(--blue); font-weight: 600; }
+
+    /* ⑦ Charts */
+    .chart-card { padding: 14px 14px 12px; }
+    .chart-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 14px;
-    }
-    .chart-panel .panel-head h3 {
-      margin: 0;
-      font-family: "Noto Sans", sans-serif;
-      font-weight: 500;
-      font-size: 14px;
-      color: var(--ink);
-      letter-spacing: -0.005em;
-    }
-    .chart-panel .panel-head .panel-sub {
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .legend i.dashed {
-      border-top: 2px dashed #161616;
-      height: 0;
-      background: transparent !important;
-      width: 14px;
-    }
-    .chart-wrap { position: relative; touch-action: pan-y; }
-    .chart-tooltip {
-      position: absolute;
-      top: 8px;
-      background: var(--ink);
-      color: #fff;
-      padding: 8px 10px;
-      border-radius: 4px;
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 11px;
-      pointer-events: none;
-      min-width: 160px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 2;
-    }
-    .chart-tooltip[hidden] { display: none; }
-    .chart-tooltip .t-month {
-      color: var(--whisper);
-      margin-bottom: 6px;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      font-size: 9px;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-      padding-bottom: 4px;
-    }
-    .chart-tooltip .t-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
       gap: 12px;
-      padding: 2px 0;
+      padding: 2px 4px 12px;
     }
-    .chart-tooltip .t-row span { color: var(--whisper); }
-    .chart-tooltip .t-row b { font-weight: 500; color: #fff; }
+    .chart-head .title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .chart-head .scrub-month {
+      font-size: 13px;
+      color: var(--label-2);
+      font-feature-settings: "tnum" 1;
+    }
+    .chart-vals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      padding: 0 4px 10px;
+      font-size: 12px;
+      font-feature-settings: "tnum" 1;
+    }
+    .chart-vals .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-vals .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      display: inline-block;
+    }
+    .chart-vals .pill .lab { color: var(--label-2); }
+    .chart-vals .pill .val { color: var(--ink); font-weight: 500; }
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      touch-action: pan-y;
+      padding-right: 36px; /* ラベル分の右余白 */
+    }
+    .chart-wrap svg {
+      display: block;
+      width: 100%;
+      height: 200px;
+      overflow: visible;
+    }
     .chart-cursor {
       position: absolute;
       top: 0;
-      bottom: 36px;
+      bottom: 0;
       width: 1px;
       background: var(--blue);
       pointer-events: none;
-      opacity: 0.55;
-      z-index: 1;
+      opacity: 0.5;
     }
     .chart-cursor[hidden] { display: none; }
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 14px;
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .legend i {
-      display: inline-block;
-      width: 16px; height: 2px;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-    .signal {
-      padding: 16px 18px;
-    }
-    .signal .n { font-family: "Noto Sans Mono", monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-    .signal .v { font-family: "Noto Sans", sans-serif; font-weight: 400; font-size: 22px; color: var(--ink); margin-top: 6px; font-feature-settings: "tnum" 1; }
-    .signal .t { font-family: "Noto Sans Mono", monospace; font-size: 11px; margin-top: 4px; }
-    .signal.up .t { color: var(--green); }
-    .signal.warn .t { color: var(--red); }
-    .signal.flat .t { color: var(--muted); }
+
+    /* footer */
     footer {
-      padding: 18px 24px;
-      background: var(--ink);
-      color: var(--whisper);
-      font-family: "Noto Sans Mono", monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--label-3);
       text-align: center;
-      line-height: 1.7;
+      padding: 8px 4px 0;
+      line-height: 1.6;
+    }
+
+    /* Mobile fine-tuning */
+    @media (max-width: 480px) {
+      .hero .figure { font-size: 44px; }
+      .kpi .val { font-size: 19px; }
+      main { padding: 28px 14px 40px; }
     }
   </style>
 </head>
 <body>
   <main>
-    <div class="ribbon">
-      <div class="id">Asset Command / Wangan Mid-rise</div>
-      <div class="ticker">
-        <span>NIK<b>41,200</b></span>
-        <span>JGB10Y<b>1.05%</b></span>
-        <span>PSM<b>¥1,680K</b></span>
-        <span>CONF<b>C</b></span>
-      </div>
-      <div class="ts">REV 2026.05.02 / 09:14 JST</div>
+    <!-- ① Page header -->
+    <div class="page-head">
+      <div class="title">資産</div>
+      <div class="date">2026.05.03</div>
     </div>
 
-    <div class="frame">
-      <div class="grid12">
-        <div class="cell hero-cell">
-          <div class="head"><span class="tag">PRIMARY</span><span>含み益 / Equity Above Loan</span></div>
-          <p class="figure"><span class="yen">¥</span>53,505,861</p>
-          <p class="figure-label">標準成約価格 ¥132,090K − ローン残債 ¥78,584K</p>
-          <div class="deltas">
-            <div class="d up"><div class="k">MoM</div><div class="v">+1.40%</div></div>
-            <div class="d up"><div class="k">vs Purchase</div><div class="v">+¥52,290K</div></div>
-            <div class="d"><div class="k">Confidence</div><div class="v">C / Asking-adj</div></div>
-          </div>
+    <!-- ② Hero -->
+    <section class="card hero">
+      <div class="sec-label">含み益</div>
+      <div class="figure">¥53,505,861</div>
+      <div class="delta">▲ ¥1,240K<span class="delta-lab">前月比</span></div>
+      <div class="rows">
+        <div class="row">
+          <span class="lab">購入比</span>
+          <span class="val pos">▲ ¥52,290K</span>
         </div>
+        <div class="row">
+          <span class="lab">信頼度</span>
+          <span class="val">標準（±5%）</span>
+        </div>
+        <div class="row">
+          <span class="lab">内訳</span>
+          <span class="val">標準成約 − ローン残債</span>
+        </div>
+      </div>
+    </section>
 
-        <div class="cell span3 kpi">
-          <p class="k">Sale · STD</p>
-          <p class="v"><span class="yen">¥</span>132,090K</p>
-          <p class="n">標準成約価格</p>
-        </div>
-        <div class="cell span3 kpi">
-          <p class="k">Net · STD</p>
-          <p class="v"><span class="yen">¥</span>46,532K</p>
-          <p class="n">税後手残り（概算）</p>
-        </div>
-        <div class="cell span3 kpi">
-          <p class="k">Loan</p>
-          <p class="v"><span class="yen">¥</span>78,584K</p>
-          <p class="n">2026-05-02基準</p>
-        </div>
-        <div class="cell span3 kpi">
-          <p class="k">Monthly</p>
-          <p class="v"><span class="yen">¥</span>221K</p>
-          <p class="n">0.96% 団信込／毎月27日</p>
-        </div>
-
-        <div class="section-title">
-          <h2><small>§ 01 · Scenarios</small>売却シナリオ</h2>
-          <span class="meta">3 ROWS · BY SPEED</span>
-        </div>
-        <div class="cell scen">
-          <div class="scen-card">
-            <div class="name">早期</div>
-            <div class="mult">×0.95</div>
-            <div class="desc">90日以内成約見込み</div>
-            <div class="vals">
-              <div class="v-block"><div class="lab">SALE</div><div class="val">¥125,486K</div></div>
-              <div class="v-block"><div class="lab">NET</div><div class="val">¥41,002K</div></div>
-            </div>
-          </div>
-          <div class="scen-card std">
-            <div class="name">標準 ★</div>
-            <div class="mult">×1.00</div>
-            <div class="desc">3〜6ヶ月／採用根拠の中央値</div>
-            <div class="vals">
-              <div class="v-block"><div class="lab">SALE</div><div class="val">¥132,090K</div></div>
-              <div class="v-block"><div class="lab">NET</div><div class="val">¥46,532K</div></div>
-            </div>
-          </div>
-          <div class="scen-card">
-            <div class="name">強気</div>
-            <div class="mult">×1.07</div>
-            <div class="desc">買主厳選</div>
-            <div class="vals">
-              <div class="v-block"><div class="lab">SALE</div><div class="val">¥141,336K</div></div>
-              <div class="v-block"><div class="lab">NET</div><div class="val">¥54,194K</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section-title">
-          <h2><small>§ 02 · Net Proceeds & Evidence</small>手残り構造と価格根拠</h2>
-          <span class="meta">STD SCENARIO</span>
-        </div>
-        <div class="cell breakdown">
-          <div class="label-row"><span class="tag">A</span>BREAKDOWN</div>
-          <ul class="bd">
-            <li class="bd-row pos">
-              <div class="bd-lab">売却価格</div>
-              <div class="bd-val">+¥132,090K</div>
-            </li>
-            <li class="bd-row neg">
-              <div class="bd-lab">ローン残債</div>
-              <div class="bd-val">−¥78,584K</div>
-            </li>
-            <li class="bd-row neg">
-              <div class="bd-lab">仲介手数料</div>
-              <div class="bd-val">−¥4,424K</div>
-            </li>
-            <li class="bd-row neg">
-              <div class="bd-lab">諸費用</div>
-              <div class="bd-val">−¥350K</div>
-            </li>
-            <li class="bd-row neg">
-              <div class="bd-lab">譲渡税</div>
-              <div class="bd-val">−¥2,200K</div>
-            </li>
-            <li class="bd-row total">
-              <div class="bd-lab">税後手残り</div>
-              <div class="bd-val">¥46,532K</div>
-            </li>
-          </ul>
-        </div>
-        <div class="cell ev-cell">
-          <div class="label-row"><span class="tag blue">B</span>EVIDENCE</div>
-          <div class="ev">
-            <article class="e selected">
-              <div class="lab">SAME-BLDG ASKING · Conf C</div>
-              <div class="pp">¥1,620K /㎡</div>
-              <div class="nt">公開売出単価を成約寄りに補正・採用中</div>
-            </article>
-            <article class="e">
-              <div class="lab">WANGAN AREA · Conf D</div>
-              <div class="pp">¥1,410K /㎡</div>
-              <div class="nt">広域指標。建物個別性を反映しない</div>
-            </article>
-          </div>
-          <div class="flow">
-            <div class="fr"><span class="label">BASE PSM</span><span class="val">¥1,620K</span></div>
-            <div class="fr"><span class="label">ASK→SOLD ADJ</span><span class="val">+8.0%</span></div>
-            <div class="fr"><span class="label">ADJUSTED PSM</span><span class="val">¥1,750K</span></div>
-            <div class="fr"><span class="label">AREA × 76.5</span><span class="val">¥133,844K</span></div>
-            <div class="fr"><span class="label">UNIT ADJ</span><span class="val">+5.0%</span></div>
-            <div class="fr"><span class="label">MARKET ADJ</span><span class="val">−6.0%</span></div>
-            <div class="fr total"><span class="label">STANDARD</span><span class="val">¥132,090K</span></div>
-          </div>
-        </div>
-
-        <div class="section-title">
-          <h2><small>§ 03 · Projection · 10y</small>10年推移シミュレーション</h2>
-          <span class="meta">¥M · MONTHLY</span>
-        </div>
-
-        <div class="cell chart-cell chart-panel">
-          <div class="panel-head">
-            <h3>成約価格 vs 残債</h3>
-            <span class="panel-sub">Gap = Equity</span>
-          </div>
-          <div class="axes">
-            <span>Y · ¥ MILLIONS</span>
-            <span>X · MONTHS · 0 / 24 / 60 / 120</span>
-          </div>
-          <div class="chart-wrap" data-chart="1">
-            <svg id="chart1" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <defs>
-                <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
-                  <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
-                </pattern>
-              </defs>
-              <rect width="600" height="220" fill="url(#grid1)"/>
-              <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
-              <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
-
-              <!-- 含み益エリア: 標準成約価格(下端) と 残債(上端) で囲んだ領域を薄塗り -->
-              <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
-                    fill="#0f62fe" fill-opacity="0.06" stroke="none"/>
-
-              <!-- ベア成約価格(灰細) -->
-              <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
-              <!-- ブル成約価格(緑細) -->
-              <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
-              <!-- 標準成約価格(青太・主役) -->
-              <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
-              <!-- ローン残債(破線) -->
-              <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#161616" stroke-width="1.5" stroke-dasharray="4 4"/>
-
-              <!-- NOW marker -->
-              <line x1="2" y1="0" x2="2" y2="220" stroke="#0f62fe" stroke-width="1.5" opacity="0.6"/>
-              <text x="6" y="11" font-size="9" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="600">NOW</text>
-              <circle cx="2" cy="82" r="3" fill="#198038" stroke="#fff" stroke-width="1"/>
-              <circle cx="2" cy="90" r="3" fill="#0f62fe" stroke="#fff" stroke-width="1"/>
-              <circle cx="2" cy="98" r="3" fill="#6f6f6f" stroke="#fff" stroke-width="1"/>
-              <circle cx="2" cy="108" r="3" fill="#161616" stroke="#fff" stroke-width="1"/>
-
-              <text x="606" y="42" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
-              <text x="606" y="10" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
-              <text x="606" y="118" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
-              <text x="606" y="184" font-size="10" fill="#161616" font-family="Noto Sans Mono" font-weight="500">LOAN</text>
-            </svg>
-            <div class="chart-cursor" hidden></div>
-            <div class="chart-tooltip" hidden></div>
-          </div>
-          <div class="legend">
-            <span><i style="background:#198038"></i>BULL 成約 +3.0%/y</span>
-            <span><i style="background:#0f62fe"></i>STD 成約 +1.0%/y</span>
-            <span><i style="background:#6f6f6f"></i>BEAR 成約 −1.0%/y</span>
-            <span><i class="dashed"></i>LOAN 残債（毎月27日）</span>
-          </div>
-        </div>
-
-        <div class="cell chart-cell chart-panel">
-          <div class="panel-head">
-            <h3>税後手残り</h3>
-            <span class="panel-sub">Net After Tax</span>
-          </div>
-          <div class="axes">
-            <span>Y · ¥ MILLIONS</span>
-            <span>X · MONTHS · 0 / 24 / 60 / 120</span>
-          </div>
-          <div class="chart-wrap" data-chart="2">
-            <svg id="chart2" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-              <defs>
-                <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
-                  <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
-                </pattern>
-              </defs>
-              <rect width="600" height="220" fill="url(#grid2)"/>
-              <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
-              <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
-              <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
-              <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
-              <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
-
-              <!-- NOW marker -->
-              <line x1="2" y1="0" x2="2" y2="220" stroke="#0f62fe" stroke-width="1.5" opacity="0.6"/>
-              <text x="6" y="11" font-size="9" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="600">NOW</text>
-              <circle cx="2" cy="150" r="3" fill="#0f62fe" stroke="#fff" stroke-width="1"/>
-
-              <text x="606" y="100" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
-              <text x="606" y="50" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
-              <text x="606" y="156" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
-            </svg>
-            <div class="chart-cursor" hidden></div>
-            <div class="chart-tooltip" hidden></div>
-          </div>
-          <div class="legend">
-            <span><i style="background:#198038"></i>BULL · 10Y ¥84,200K</span>
-            <span><i style="background:#0f62fe"></i>STD &nbsp;· 10Y ¥58,700K</span>
-            <span><i style="background:#6f6f6f"></i>BEAR · 10Y ¥38,400K</span>
-          </div>
-        </div>
-
-        <div class="section-title">
-          <h2><small>§ 04 · Market Signals</small>市況シグナル</h2>
-          <span class="meta">SAMPLED MoM</span>
-        </div>
-        <div class="cell span4 signal up"><div class="n">NIKKEI 225</div><div class="v">41,200</div><div class="t">↑ MoM +1.80%</div></div>
-        <div class="cell span4 signal flat"><div class="n">JGB 10Y YIELD</div><div class="v">1.05%</div><div class="t">→ 0.00pt</div></div>
-        <div class="cell span4 signal warn"><div class="n">WANGAN PSM</div><div class="v">¥1,680K</div><div class="t">↓ MoM −0.60%</div></div>
+    <!-- ③ KPI 2×2 -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="lab">標準成約</div>
+        <div class="val">¥132,090K</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">税後手残</div>
+        <div class="val">¥46,532K</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">ローン残債</div>
+        <div class="val">¥78,584K</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">月額返済</div>
+        <div class="val">¥221K</div>
       </div>
     </div>
 
+    <!-- ④ Scenarios -->
+    <section class="card">
+      <div class="sec-label">売却シナリオ</div>
+      <div class="scen-row">
+        <span class="name">早期</span>
+        <span class="mult">×0.95</span>
+        <span class="v"><span class="vlab">成約</span><span class="vnum">¥125,486K</span></span>
+        <span class="v"><span class="vlab">手残</span><span class="vnum">¥41,002K</span></span>
+      </div>
+      <div class="scen-row std">
+        <span class="name">標準 ★</span>
+        <span class="mult">×1.00</span>
+        <span class="v"><span class="vlab">成約</span><span class="vnum">¥132,090K</span></span>
+        <span class="v"><span class="vlab">手残</span><span class="vnum">¥46,532K</span></span>
+      </div>
+      <div class="scen-row">
+        <span class="name">強気</span>
+        <span class="mult">×1.07</span>
+        <span class="v"><span class="vlab">成約</span><span class="vnum">¥141,336K</span></span>
+        <span class="v"><span class="vlab">手残</span><span class="vnum">¥54,194K</span></span>
+      </div>
+    </section>
+
+    <!-- ⑤ Breakdown -->
+    <section class="card">
+      <div class="sec-label">税後手残りの内訳</div>
+      <div class="row"><span class="lab">売却価格</span><span class="val pos">+¥132,090K</span></div>
+      <div class="row"><span class="lab">ローン残債</span><span class="val neg">−¥78,584K</span></div>
+      <div class="row"><span class="lab">仲介手数料</span><span class="val neg">−¥4,424K</span></div>
+      <div class="row"><span class="lab">諸費用</span><span class="val neg">−¥350K</span></div>
+      <div class="row"><span class="lab">譲渡税</span><span class="val neg">−¥2,200K</span></div>
+      <div class="row total"><span class="lab">税後手残り</span><span class="val">¥46,532K</span></div>
+    </section>
+
+    <!-- ⑥a Evidence -->
+    <section class="card">
+      <div class="sec-label">評価根拠（PSM比較）</div>
+      <div class="row"><span class="lab">同マンション売出</span><span class="val">¥1,620K /㎡</span></div>
+      <div class="row"><span class="lab">湾岸・江東区平均</span><span class="val">¥1,410K /㎡</span></div>
+    </section>
+
+    <!-- ⑥b Adjustment flow -->
+    <section class="card">
+      <div class="sec-label">価格調整フロー</div>
+      <div class="row"><span class="lab">基準㎡単価</span><span class="val">¥1,620K</span></div>
+      <div class="row"><span class="lab">売出→成約補正</span><span class="val">×1.08</span></div>
+      <div class="row"><span class="lab">補正後㎡単価</span><span class="val">¥1,750K</span></div>
+      <div class="row"><span class="lab">面積反映 (×76.5㎡)</span><span class="val">¥133,844K</span></div>
+      <div class="row"><span class="lab">住戸補正</span><span class="val">×0.99</span></div>
+      <div class="row"><span class="lab">市況補正</span><span class="val">×1.00</span></div>
+      <div class="row total"><span class="lab">標準成約</span><span class="val">¥132,090K</span></div>
+    </section>
+
+    <!-- ⑦ Chart 1: 売却価格 × ローン残債 -->
+    <section class="card chart-card">
+      <div class="chart-head">
+        <span class="title">売却価格 × ローン残債</span>
+        <span class="scrub-month" data-chart-month="1">10年（M0 / 現在）</span>
+      </div>
+      <div class="chart-vals">
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="1-bull">¥132,090K</span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="1-std">¥132,090K</span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="1-bear">¥132,090K</span></span>
+        <span class="pill"><span class="dot" style="background:#1c1c1e"></span><span class="lab">ローン</span><span class="val" data-scrub="1-loan">¥78,584K</span></span>
+      </div>
+      <div class="chart-wrap" data-chart="1">
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="600" height="220" fill="url(#grid1)"/>
+          <line x1="0" y1="220" x2="600" y2="220" stroke="#d2d2d7" stroke-width="1"/>
+
+          <!-- 含み益エリア -->
+          <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
+                fill="#007aff" fill-opacity="0.05" stroke="none"/>
+
+          <!-- 弱気 -->
+          <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#8e8e93" stroke-width="1.2"/>
+          <!-- 強気 -->
+          <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#34c759" stroke-width="1.4"/>
+          <!-- 標準 -->
+          <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#007aff" stroke-width="2.5"/>
+          <!-- ローン残債(破線) -->
+          <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#1c1c1e" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+          <!-- NOW marker -->
+          <line x1="2" y1="0" x2="2" y2="220" stroke="#007aff" stroke-width="1.5" opacity="0.55"/>
+          <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
+          <circle cx="2" cy="82" r="3" fill="#34c759" stroke="#fff" stroke-width="1"/>
+          <circle cx="2" cy="90" r="3" fill="#007aff" stroke="#fff" stroke-width="1"/>
+          <circle cx="2" cy="98" r="3" fill="#8e8e93" stroke="#fff" stroke-width="1"/>
+          <circle cx="2" cy="108" r="3" fill="#1c1c1e" stroke="#fff" stroke-width="1"/>
+
+          <text x="606" y="42" font-size="10" fill="#007aff" font-weight="500">標準</text>
+          <text x="606" y="10" font-size="10" fill="#34c759" font-weight="500">強気</text>
+          <text x="606" y="118" font-size="10" fill="#8e8e93" font-weight="500">弱気</text>
+          <text x="606" y="184" font-size="10" fill="#1c1c1e" font-weight="500">ローン</text>
+        </svg>
+        <div class="chart-cursor" hidden></div>
+      </div>
+    </section>
+
+    <!-- ⑦ Chart 2: 税後手残り -->
+    <section class="card chart-card">
+      <div class="chart-head">
+        <span class="title">税後手残り推移</span>
+        <span class="scrub-month" data-chart-month="2">10年（M0 / 現在）</span>
+      </div>
+      <div class="chart-vals">
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull">¥46,532K</span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std">¥46,532K</span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear">¥46,532K</span></span>
+      </div>
+      <div class="chart-wrap" data-chart="2">
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="600" height="220" fill="url(#grid2)"/>
+          <line x1="0" y1="220" x2="600" y2="220" stroke="#d2d2d7" stroke-width="1"/>
+
+          <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#8e8e93" stroke-width="1.2"/>
+          <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#007aff" stroke-width="2.5"/>
+          <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#34c759" stroke-width="1.4"/>
+
+          <!-- NOW marker -->
+          <line x1="2" y1="0" x2="2" y2="220" stroke="#007aff" stroke-width="1.5" opacity="0.55"/>
+          <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
+          <circle cx="2" cy="150" r="3.5" fill="#007aff" stroke="#fff" stroke-width="1"/>
+
+          <text x="606" y="100" font-size="10" fill="#007aff" font-weight="500">標準</text>
+          <text x="606" y="50" font-size="10" fill="#34c759" font-weight="500">強気</text>
+          <text x="606" y="156" font-size="10" fill="#8e8e93" font-weight="500">弱気</text>
+        </svg>
+        <div class="chart-cursor" hidden></div>
+      </div>
+    </section>
+
+    <!-- ⑧ Market signals -->
+    <section class="card">
+      <div class="sec-label">市況シグナル</div>
+      <div class="row"><span class="lab">日経平均</span><span class="val">41,200 <span class="pos">▲0.4%</span></span></div>
+      <div class="row"><span class="lab">JGB 10年利回り</span><span class="val">1.05% <span class="pos">▲0.02pt</span></span></div>
+      <div class="row"><span class="lab">湾岸㎡単価</span><span class="val">¥1,680K <span class="pos">▲1.8%</span></span></div>
+    </section>
+
+    <!-- ⑨ Footer -->
     <footer>
-      DATA REV 2026.05.02 / LOAN AUTO-UPDATE 27TH / 仲介手数料 3%+6万+消費税 / 諸費用は抵当権抹消・印紙・司法書士等 / CGT ¥30M PRIMARY-RES DEDUCTION ASSUMED / FINAL DECISIONS REQUIRE PROFESSIONAL CONSULTATION
+      データ最終更新 2026.05.03 ／ 個人用プロトタイプ
     </footer>
   </main>
+
   <script>
     (function () {
       const fmtK = (n) => '¥' + Math.round(n).toLocaleString() + 'K';
@@ -799,18 +498,18 @@
         {
           key: '1',
           rows: [
-            { label: 'BULL', data: gen(132090, 3),  color: '#198038' },
-            { label: 'STD',  data: gen(132090, 1),  color: '#0f62fe' },
-            { label: 'BEAR', data: gen(132090, -1), color: '#6f6f6f' },
-            { label: 'LOAN', data: genLoan(78584, 50000), color: '#161616' }
+            { label: 'bull', data: gen(132090, 3) },
+            { label: 'std',  data: gen(132090, 1) },
+            { label: 'bear', data: gen(132090, -1) },
+            { label: 'loan', data: genLoan(78584, 50000) }
           ]
         },
         {
           key: '2',
           rows: [
-            { label: 'BULL', data: gen(46532, 6.0),  color: '#198038' },
-            { label: 'STD',  data: gen(46532, 2.3),  color: '#0f62fe' },
-            { label: 'BEAR', data: gen(46532, -1.9), color: '#6f6f6f' }
+            { label: 'bull', data: gen(46532, 6.0) },
+            { label: 'std',  data: gen(46532, 2.3) },
+            { label: 'bear', data: gen(46532, -1.9) }
           ]
         }
       ];
@@ -819,36 +518,47 @@
         const wrap = document.querySelector(`.chart-wrap[data-chart="${c.key}"]`);
         if (!wrap) return;
         const svg = wrap.querySelector('svg');
-        const tip = wrap.querySelector('.chart-tooltip');
         const cursor = wrap.querySelector('.chart-cursor');
+        const monthEl = document.querySelector(`[data-chart-month="${c.key}"]`);
+        const valEls = {};
+        c.rows.forEach((r) => {
+          valEls[r.label] = document.querySelector(`[data-scrub="${c.key}-${r.label}"]`);
+        });
+
+        const setMonth = (m) => {
+          if (m === 0) {
+            monthEl.textContent = '10年（M0 / 現在）';
+          } else {
+            const y = (m / 12).toFixed(1);
+            monthEl.textContent = `Y${y} / M${m}`;
+          }
+        };
 
         const update = (clientX) => {
           const rect = svg.getBoundingClientRect();
-          const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
-          const m = Math.round((x / rect.width) * 120);
-          const months = `M ${m} / Y ${(m / 12).toFixed(1)}`;
-          const rowsHTML = c.rows
-            .map(
-              (r) =>
-                `<div class="t-row"><span style="color:${r.color}">${r.label}</span><b>${fmtK(r.data[m])}</b></div>`
-            )
-            .join('');
-          tip.innerHTML = `<div class="t-month">${months}</div>${rowsHTML}`;
-          tip.hidden = false;
+          const xRatio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+          const m = Math.round(xRatio * 120);
+          setMonth(m);
+          c.rows.forEach((r) => {
+            if (valEls[r.label]) valEls[r.label].textContent = fmtK(r.data[m]);
+          });
           cursor.hidden = false;
-          cursor.style.left = `${x}px`;
-          const tipW = tip.offsetWidth;
-          const wrapW = wrap.clientWidth;
-          tip.style.left = `${Math.min(Math.max(0, x - tipW / 2), wrapW - tipW)}px`;
+          cursor.style.left = `${xRatio * 100}%`;
         };
-        const hide = () => {
-          tip.hidden = true;
+
+        const resetScrub = () => {
+          setMonth(0);
+          c.rows.forEach((r) => {
+            if (valEls[r.label]) valEls[r.label].textContent = fmtK(r.data[0]);
+          });
           cursor.hidden = true;
         };
 
-        svg.addEventListener('pointermove', (e) => update(e.clientX));
-        svg.addEventListener('pointerdown', (e) => update(e.clientX));
-        svg.addEventListener('pointerleave', hide);
+        wrap.addEventListener('pointermove', (e) => update(e.clientX));
+        wrap.addEventListener('pointerdown', (e) => update(e.clientX));
+        wrap.addEventListener('pointerleave', resetScrub);
+        wrap.addEventListener('pointerup', resetScrub);
+        wrap.addEventListener('pointercancel', resetScrub);
       });
     })();
   </script>

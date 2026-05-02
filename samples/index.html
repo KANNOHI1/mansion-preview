@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Asset Command — B. Schematic (Noto Sans)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f4f4;
+      --paper: #ffffff;
+      --ink: #161616;
+      --ink-soft: #393939;
+      --body: #525252;
+      --muted: #6f6f6f;
+      --whisper: #a8a8a8;
+      --rule: #e0e0e0;
+      --rule-strong: #c6c6c6;
+      --blue: #0f62fe;
+      --blue-soft: #d0e2ff;
+      --red: #da1e28;
+      --green: #198038;
+      --orange: #d2a106;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--body);
+      font-family: "Noto Sans", "Noto Sans JP", -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: 0;
+    }
+    .mono {
+      font-family: "Noto Sans Mono", "SF Mono", monospace;
+      font-feature-settings: "tnum" 1;
+    }
+    main {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0;
+    }
+    .ribbon {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 20px;
+      padding: 14px 24px;
+      background: var(--ink);
+      color: #fff;
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      align-items: center;
+    }
+    .ribbon .id {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
+    .ribbon .id::before {
+      content: "";
+      width: 14px; height: 14px;
+      background: var(--blue);
+      display: inline-block;
+    }
+    .ribbon .ticker {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      color: var(--whisper);
+    }
+    .ribbon .ticker span b { color: #fff; font-weight: 500; margin-left: 6px; }
+    .ribbon .ts { color: var(--whisper); white-space: nowrap; }
+    @media (max-width: 720px) {
+      .ribbon { grid-template-columns: 1fr; gap: 8px; padding: 12px 18px; }
+      .ribbon .ticker { font-size: 10px; gap: 12px; }
+    }
+    .frame {
+      background: var(--paper);
+      padding: 56px 24px 48px;
+    }
+    @media (max-width: 540px) { .frame { padding: 36px 18px 36px; } }
+    .grid12 {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .cell { background: var(--paper); padding: 18px 18px 18px; }
+    .cell.span12 { grid-column: span 12; }
+    .cell.span8 { grid-column: span 8; }
+    .cell.span6 { grid-column: span 6; }
+    .cell.span4 { grid-column: span 4; }
+    .cell.span3 { grid-column: span 3; }
+    @media (max-width: 720px) {
+      .cell.span8, .cell.span6, .cell.span4, .cell.span3 { grid-column: span 12; }
+    }
+    .label-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: center;
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .label-row .tag {
+      padding: 2px 6px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+    }
+    .label-row .tag.blue { background: var(--blue); }
+    .label-row .tag.red { background: var(--red); }
+    .label-row .tag.green { background: var(--green); }
+    .label-row .ref { color: var(--whisper); margin-left: auto; font-weight: 400; }
+    .hero-cell {
+      grid-column: span 12;
+      padding: 36px 28px 32px;
+    }
+    @media (max-width: 540px) { .hero-cell { padding: 28px 18px 24px; } }
+    .hero-cell .head {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-cell .head .tag { padding: 3px 8px; background: var(--blue); color: #fff; font-weight: 500; }
+    .hero-cell .figure {
+      margin: 0;
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 300;
+      font-size: clamp(56px, 11vw, 96px);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      font-feature-settings: "tnum" 1;
+    }
+    .hero-cell .figure .yen {
+      font-family: "Noto Sans Mono", monospace;
+      font-weight: 300;
+      font-size: 0.45em;
+      vertical-align: 0.55em;
+      margin-right: 0.1em;
+      color: var(--ink-soft);
+    }
+    .hero-cell .figure-label {
+      margin: 8px 0 0;
+      font-family: "Noto Sans JP", sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--body);
+    }
+    .hero-cell .deltas {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border-top: 1px solid var(--rule);
+    }
+    @media (max-width: 540px) { .hero-cell .deltas { grid-template-columns: 1fr; } }
+    .hero-cell .deltas .d {
+      background: var(--paper);
+      padding: 14px 0 4px;
+    }
+    .hero-cell .deltas .d .k {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .hero-cell .deltas .d .v {
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: var(--ink);
+      font-feature-settings: "tnum" 1;
+    }
+    .hero-cell .deltas .d.up .v { color: var(--green); }
+    .hero-cell .deltas .d.down .v { color: var(--red); }
+    .kpi {
+      padding: 16px 18px;
+    }
+    .kpi .k {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    .kpi .v {
+      margin: 0;
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      font-feature-settings: "tnum" 1;
+    }
+    .kpi .v .yen {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 0.65em;
+      color: var(--ink-soft);
+      margin-right: 2px;
+    }
+    .kpi .n {
+      margin: 6px 0 0;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .section-title {
+      grid-column: span 12;
+      padding: 24px 18px 12px;
+      background: var(--paper);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--rule);
+    }
+    .section-title h2 {
+      margin: 0;
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+    }
+    .section-title h2 small {
+      display: block;
+      font-family: "Noto Sans Mono", monospace;
+      font-weight: 400;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .section-title .meta {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scen {
+      grid-column: span 12;
+      padding: 0;
+    }
+    .scen table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "Noto Sans", sans-serif;
+    }
+    .scen th, .scen td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--rule);
+      font-size: 13px;
+      vertical-align: baseline;
+    }
+    .scen th {
+      font-family: "Noto Sans Mono", monospace;
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #fafafa;
+    }
+    .scen td.num {
+      text-align: right;
+      font-family: "Noto Sans Mono", monospace;
+      font-feature-settings: "tnum" 1;
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .scen td.name {
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .scen td.name small {
+      display: block;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+    .scen tr.std td { background: #f0f7ff; }
+    .scen tr.std td.name { font-weight: 600; }
+    .scen tr.std td.num { color: var(--blue); }
+    .breakdown {
+      grid-column: span 6;
+      padding: 18px;
+    }
+    .breakdown table { width: 100%; border-collapse: collapse; }
+    .breakdown td {
+      padding: 9px 0;
+      font-size: 13px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .breakdown td.lab { color: var(--body); font-family: "Noto Sans JP", sans-serif; }
+    .breakdown td.val { text-align: right; font-family: "Noto Sans Mono", monospace; color: var(--ink); }
+    .breakdown td.val.neg { color: var(--red); }
+    .breakdown td.val.pos { color: var(--green); }
+    .breakdown .total td {
+      border-top: 2px solid var(--ink);
+      border-bottom: none;
+      padding-top: 14px;
+      font-weight: 500;
+    }
+    .breakdown .total .val {
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .ev-cell {
+      grid-column: span 6;
+      padding: 18px;
+    }
+    .ev {
+      display: grid;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin-bottom: 16px;
+    }
+    .ev .e {
+      background: var(--paper);
+      padding: 12px 14px;
+    }
+    .ev .e.selected {
+      background: var(--blue-soft);
+      border-left: 3px solid var(--blue);
+    }
+    .ev .e .lab { font-family: "Noto Sans Mono", monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .ev .e .pp { font-family: "Noto Sans", sans-serif; font-weight: 500; font-size: 16px; color: var(--ink); margin-top: 4px; }
+    .ev .e .nt { font-family: "Noto Sans JP", sans-serif; font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .flow {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 11px;
+    }
+    .flow .fr {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--rule);
+      gap: 12px;
+      align-items: baseline;
+    }
+    .flow .fr .label { color: var(--muted); }
+    .flow .fr .val { color: var(--ink); font-weight: 500; }
+    .flow .fr.total { border-top: 1px solid var(--ink); padding-top: 10px; margin-top: 6px; border-bottom: none; }
+    .flow .fr.total .val { color: var(--blue); font-size: 13px; }
+    .chart-cell {
+      grid-column: span 12;
+      padding: 24px 28px 28px;
+    }
+    .chart-cell .axes {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      margin-bottom: 14px;
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chart-cell svg { width: 100%; height: auto; display: block; }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 14px;
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .legend i {
+      display: inline-block;
+      width: 16px; height: 2px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    .signal {
+      padding: 16px 18px;
+    }
+    .signal .n { font-family: "Noto Sans Mono", monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .signal .v { font-family: "Noto Sans", sans-serif; font-weight: 400; font-size: 22px; color: var(--ink); margin-top: 6px; font-feature-settings: "tnum" 1; }
+    .signal .t { font-family: "Noto Sans Mono", monospace; font-size: 11px; margin-top: 4px; }
+    .signal.up .t { color: var(--green); }
+    .signal.warn .t { color: var(--red); }
+    .signal.flat .t { color: var(--muted); }
+    footer {
+      padding: 18px 24px;
+      background: var(--ink);
+      color: var(--whisper);
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="ribbon">
+      <div class="id">Asset Command / Wangan Mid-rise</div>
+      <div class="ticker">
+        <span>NIK<b>41,200</b></span>
+        <span>JGB10Y<b>1.05%</b></span>
+        <span>PSM<b>¥1.68M</b></span>
+        <span>CONF<b>C</b></span>
+      </div>
+      <div class="ts">REV 2026.05.02 / 09:14 JST</div>
+    </div>
+
+    <div class="frame">
+      <div class="grid12">
+        <div class="cell hero-cell">
+          <div class="head"><span class="tag">PRIMARY</span><span>含み益 / Equity Above Loan</span></div>
+          <p class="figure"><span class="yen">¥</span>53,505,861</p>
+          <p class="figure-label">標準成約価格 ¥132,090,000 − ローン残債 ¥78,584,139</p>
+          <div class="deltas">
+            <div class="d up"><div class="k">MoM</div><div class="v">+1.40%</div></div>
+            <div class="d up"><div class="k">vs Purchase</div><div class="v">+¥52,290,000</div></div>
+            <div class="d"><div class="k">Confidence</div><div class="v">C / Asking-adj</div></div>
+          </div>
+        </div>
+
+        <div class="cell span3 kpi">
+          <p class="k">Sale · STD</p>
+          <p class="v"><span class="yen">¥</span>132,090,000</p>
+          <p class="n">標準成約価格</p>
+        </div>
+        <div class="cell span3 kpi">
+          <p class="k">Net · STD</p>
+          <p class="v"><span class="yen">¥</span>46,531,891</p>
+          <p class="n">税後手残り（概算）</p>
+        </div>
+        <div class="cell span3 kpi">
+          <p class="k">Loan</p>
+          <p class="v"><span class="yen">¥</span>78,584,139</p>
+          <p class="n">2026-05-02基準</p>
+        </div>
+        <div class="cell span3 kpi">
+          <p class="k">Monthly</p>
+          <p class="v"><span class="yen">¥</span>221,073</p>
+          <p class="n">0.96% 団信込／毎月27日</p>
+        </div>
+
+        <div class="section-title">
+          <h2><small>§ 01 · Scenarios</small>売却シナリオ</h2>
+          <span class="meta">3 ROWS · BY SPEED</span>
+        </div>
+        <div class="cell scen">
+          <table>
+            <thead>
+              <tr><th>Scenario</th><th class="num" style="text-align:right">Multiplier</th><th class="num" style="text-align:right">Sale Price</th><th class="num" style="text-align:right">Net Proceeds</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="name">Early · 早期売却<small>90日以内成約見込み</small></td><td class="num">×0.95</td><td class="num">¥125,485,500</td><td class="num">¥41,002,300</td></tr>
+              <tr class="std"><td class="name">Standard · 標準売却<small>3〜6ヶ月／採用根拠の中央値</small></td><td class="num">×1.00</td><td class="num">¥132,090,000</td><td class="num">¥46,531,891</td></tr>
+              <tr><td class="name">Strong · 強気売却<small>買主厳選</small></td><td class="num">×1.07</td><td class="num">¥141,336,300</td><td class="num">¥54,194,200</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-title">
+          <h2><small>§ 02 · Net Proceeds & Evidence</small>手残り構造と価格根拠</h2>
+          <span class="meta">STD SCENARIO</span>
+        </div>
+        <div class="cell breakdown">
+          <div class="label-row"><span class="tag">A</span>BREAKDOWN</div>
+          <table>
+            <tbody>
+              <tr><td class="lab">売却価格</td><td class="val pos">+132,090,000</td></tr>
+              <tr><td class="lab">ローン残債</td><td class="val neg">−78,584,139</td></tr>
+              <tr><td class="lab">仲介手数料 3%＋6万＋税</td><td class="val neg">−4,423,970</td></tr>
+              <tr><td class="lab">抵当権抹消・印紙・引越他</td><td class="val neg">−350,000</td></tr>
+              <tr><td class="lab">譲渡税（控除後概算）</td><td class="val neg">−2,200,000</td></tr>
+              <tr class="total"><td class="lab">税後手残り</td><td class="val">¥46,531,891</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cell ev-cell">
+          <div class="label-row"><span class="tag blue">B</span>EVIDENCE</div>
+          <div class="ev">
+            <article class="e selected">
+              <div class="lab">SAME-BLDG ASKING · Conf C</div>
+              <div class="pp">¥1,620,000 /㎡</div>
+              <div class="nt">公開売出単価を成約寄りに補正・採用中</div>
+            </article>
+            <article class="e">
+              <div class="lab">WANGAN AREA · Conf D</div>
+              <div class="pp">¥1,410,000 /㎡</div>
+              <div class="nt">広域指標。建物個別性を反映しない</div>
+            </article>
+          </div>
+          <div class="flow">
+            <div class="fr"><span class="label">BASE PSM</span><span class="val">¥1,620,000</span></div>
+            <div class="fr"><span class="label">ASK→SOLD ADJ</span><span class="val">+8.0%</span></div>
+            <div class="fr"><span class="label">ADJUSTED PSM</span><span class="val">¥1,749,600</span></div>
+            <div class="fr"><span class="label">AREA × 76.5</span><span class="val">¥133,844,400</span></div>
+            <div class="fr"><span class="label">UNIT ADJ</span><span class="val">+5.0%</span></div>
+            <div class="fr"><span class="label">MARKET ADJ</span><span class="val">−6.0%</span></div>
+            <div class="fr total"><span class="label">STANDARD</span><span class="val">¥132,090,000</span></div>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <h2><small>§ 03 · Projection · 10y</small>10年推移シミュレーション</h2>
+          <span class="meta">NET AFTER TAX · MONTHLY</span>
+        </div>
+        <div class="cell chart-cell">
+          <div class="axes">
+            <span>Y · ¥ MILLIONS</span>
+            <span>X · MONTHS FROM 2026.05</span>
+          </div>
+          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="60" height="44" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="600" height="220" fill="url(#grid)"/>
+            <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
+            <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
+            <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
+            <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
+            <text x="606" y="100" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
+            <text x="606" y="50" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
+            <text x="606" y="156" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
+          </svg>
+          <div class="legend">
+            <span><i style="background:#6f6f6f"></i>BEAR · −1.0%/y · 10Y ¥38.4M</span>
+            <span><i style="background:#0f62fe"></i>STD &nbsp;· +1.0%/y · 10Y ¥58.7M</span>
+            <span><i style="background:#198038"></i>BULL · +3.0%/y · 10Y ¥84.2M</span>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <h2><small>§ 04 · Market Signals</small>市況シグナル</h2>
+          <span class="meta">SAMPLED MoM</span>
+        </div>
+        <div class="cell span4 signal up"><div class="n">NIKKEI 225</div><div class="v">41,200</div><div class="t">↑ MoM +1.80%</div></div>
+        <div class="cell span4 signal flat"><div class="n">JGB 10Y YIELD</div><div class="v">1.05%</div><div class="t">→ 0.00pt</div></div>
+        <div class="cell span4 signal warn"><div class="n">WANGAN PSM</div><div class="v">¥1.68M</div><div class="t">↓ MoM −0.60%</div></div>
+      </div>
+    </div>
+
+    <footer>
+      DATA REV 2026.05.02 / LOAN AUTO-UPDATE 27TH / CGT ¥30M PRIMARY-RES DEDUCTION ASSUMED / FINAL DECISIONS REQUIRE PROFESSIONAL CONSULTATION
+    </footer>
+  </main>
+</body>
+</html>

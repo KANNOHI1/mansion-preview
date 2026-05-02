@@ -102,6 +102,7 @@
     .cell.span3 { grid-column: span 3; }
     @media (max-width: 720px) {
       .cell.span8, .cell.span6, .cell.span4, .cell.span3 { grid-column: span 12; }
+      .breakdown, .ev-cell { grid-column: span 12; }
     }
     .label-row {
       display: flex;
@@ -313,28 +314,42 @@
       grid-column: span 6;
       padding: 18px;
     }
-    .breakdown table { width: 100%; border-collapse: collapse; }
-    .breakdown td {
-      padding: 9px 0;
-      font-size: 13px;
+    .bd { list-style: none; padding: 0; margin: 0; }
+    .bd-row {
+      padding: 12px 0;
       border-bottom: 1px solid var(--rule);
     }
-    .breakdown td.lab { color: var(--body); font-family: "Noto Sans JP", sans-serif; }
-    .breakdown td.val { text-align: right; font-family: "Noto Sans Mono", monospace; color: var(--ink); }
-    .breakdown td.val.neg { color: var(--red); }
-    .breakdown td.val.pos { color: var(--green); }
-    .breakdown .total td {
+    .bd-row:last-child { border-bottom: none; }
+    .bd-lab {
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .bd-val {
+      font-family: "Noto Sans Mono", monospace;
+      font-feature-settings: "tnum" 1;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+    }
+    .bd-row.pos .bd-val { color: var(--green); }
+    .bd-row.neg .bd-val { color: var(--red); }
+    .bd-row.total {
       border-top: 2px solid var(--ink);
       border-bottom: none;
-      padding-top: 14px;
-      font-weight: 500;
+      padding-top: 16px;
+      margin-top: 4px;
     }
-    .breakdown .total .val {
+    .bd-row.total .bd-lab { color: var(--ink); font-weight: 600; }
+    .bd-row.total .bd-val {
       font-family: "Noto Sans", sans-serif;
+      font-size: 26px;
       font-weight: 400;
-      font-size: 22px;
       color: var(--ink);
-      letter-spacing: -0.01em;
     }
     .ev-cell {
       grid-column: span 6;
@@ -390,6 +405,34 @@
       color: var(--muted);
     }
     .chart-cell svg { width: 100%; height: auto; display: block; }
+    .chart-panel + .chart-panel { border-top: 1px solid var(--rule); }
+    .chart-panel .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+    .chart-panel .panel-head h3 {
+      margin: 0;
+      font-family: "Noto Sans", sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+    }
+    .chart-panel .panel-head .panel-sub {
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .legend i.dashed {
+      border-top: 2px dashed #161616;
+      height: 0;
+      background: transparent !important;
+      width: 14px;
+    }
     .legend {
       display: flex;
       flex-wrap: wrap;
@@ -497,16 +540,32 @@
         </div>
         <div class="cell breakdown">
           <div class="label-row"><span class="tag">A</span>BREAKDOWN</div>
-          <table>
-            <tbody>
-              <tr><td class="lab">売却価格</td><td class="val pos">+132,090,000</td></tr>
-              <tr><td class="lab">ローン残債</td><td class="val neg">−78,584,139</td></tr>
-              <tr><td class="lab">仲介手数料 3%＋6万＋税</td><td class="val neg">−4,423,970</td></tr>
-              <tr><td class="lab">抵当権抹消・印紙・引越他</td><td class="val neg">−350,000</td></tr>
-              <tr><td class="lab">譲渡税（控除後概算）</td><td class="val neg">−2,200,000</td></tr>
-              <tr class="total"><td class="lab">税後手残り</td><td class="val">¥46,531,891</td></tr>
-            </tbody>
-          </table>
+          <ul class="bd">
+            <li class="bd-row pos">
+              <div class="bd-lab">売却価格</div>
+              <div class="bd-val">+132,090,000</div>
+            </li>
+            <li class="bd-row neg">
+              <div class="bd-lab">ローン残債</div>
+              <div class="bd-val">−78,584,139</div>
+            </li>
+            <li class="bd-row neg">
+              <div class="bd-lab">仲介手数料</div>
+              <div class="bd-val">−4,423,970</div>
+            </li>
+            <li class="bd-row neg">
+              <div class="bd-lab">諸費用</div>
+              <div class="bd-val">−350,000</div>
+            </li>
+            <li class="bd-row neg">
+              <div class="bd-lab">譲渡税</div>
+              <div class="bd-val">−2,200,000</div>
+            </li>
+            <li class="bd-row total">
+              <div class="bd-lab">税後手残り</div>
+              <div class="bd-val">¥46,531,891</div>
+            </li>
+          </ul>
         </div>
         <div class="cell ev-cell">
           <div class="label-row"><span class="tag blue">B</span>EVIDENCE</div>
@@ -535,20 +594,70 @@
 
         <div class="section-title">
           <h2><small>§ 03 · Projection · 10y</small>10年推移シミュレーション</h2>
-          <span class="meta">NET AFTER TAX · MONTHLY</span>
+          <span class="meta">¥M · MONTHLY</span>
         </div>
-        <div class="cell chart-cell">
+
+        <div class="cell chart-cell chart-panel">
+          <div class="panel-head">
+            <h3>成約価格 vs 残債</h3>
+            <span class="panel-sub">Gap = Equity</span>
+          </div>
           <div class="axes">
             <span>Y · ¥ MILLIONS</span>
-            <span>X · MONTHS FROM 2026.05</span>
+            <span>X · MONTHS · 0 / 24 / 60 / 120</span>
           </div>
-          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
             <defs>
-              <pattern id="grid" width="60" height="44" patternUnits="userSpaceOnUse">
+              <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
                 <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
               </pattern>
             </defs>
-            <rect width="600" height="220" fill="url(#grid)"/>
+            <rect width="600" height="220" fill="url(#grid1)"/>
+            <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
+
+            <!-- 含み益エリア: 標準成約価格(下端) と 残債(上端) で囲んだ領域を薄塗り -->
+            <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
+                  fill="#0f62fe" fill-opacity="0.06" stroke="none"/>
+
+            <!-- ベア成約価格(灰細) -->
+            <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
+            <!-- ブル成約価格(緑細) -->
+            <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
+            <!-- 標準成約価格(青太・主役) -->
+            <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
+            <!-- ローン残債(破線) -->
+            <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#161616" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+            <text x="606" y="42" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
+            <text x="606" y="10" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
+            <text x="606" y="118" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
+            <text x="606" y="184" font-size="10" fill="#161616" font-family="Noto Sans Mono" font-weight="500">LOAN</text>
+          </svg>
+          <div class="legend">
+            <span><i style="background:#6f6f6f"></i>BEAR 成約 −1.0%/y</span>
+            <span><i style="background:#0f62fe"></i>STD 成約 +1.0%/y</span>
+            <span><i style="background:#198038"></i>BULL 成約 +3.0%/y</span>
+            <span><i class="dashed"></i>LOAN 残債（毎月27日）</span>
+          </div>
+        </div>
+
+        <div class="cell chart-cell chart-panel">
+          <div class="panel-head">
+            <h3>税後手残り</h3>
+            <span class="panel-sub">Net After Tax</span>
+          </div>
+          <div class="axes">
+            <span>Y · ¥ MILLIONS</span>
+            <span>X · MONTHS · 0 / 24 / 60 / 120</span>
+          </div>
+          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <defs>
+              <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="600" height="220" fill="url(#grid2)"/>
             <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
             <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
             <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
@@ -559,9 +668,9 @@
             <text x="606" y="156" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
           </svg>
           <div class="legend">
-            <span><i style="background:#6f6f6f"></i>BEAR · −1.0%/y · 10Y ¥38.4M</span>
-            <span><i style="background:#0f62fe"></i>STD &nbsp;· +1.0%/y · 10Y ¥58.7M</span>
-            <span><i style="background:#198038"></i>BULL · +3.0%/y · 10Y ¥84.2M</span>
+            <span><i style="background:#6f6f6f"></i>BEAR · 10Y ¥38.4M</span>
+            <span><i style="background:#0f62fe"></i>STD &nbsp;· 10Y ¥58.7M</span>
+            <span><i style="background:#198038"></i>BULL · 10Y ¥84.2M</span>
           </div>
         </div>
 
@@ -576,7 +685,7 @@
     </div>
 
     <footer>
-      DATA REV 2026.05.02 / LOAN AUTO-UPDATE 27TH / CGT ¥30M PRIMARY-RES DEDUCTION ASSUMED / FINAL DECISIONS REQUIRE PROFESSIONAL CONSULTATION
+      DATA REV 2026.05.02 / LOAN AUTO-UPDATE 27TH / 仲介手数料 3%+6万+消費税 / 諸費用は抵当権抹消・印紙・司法書士等 / CGT ¥30M PRIMARY-RES DEDUCTION ASSUMED / FINAL DECISIONS REQUIRE PROFESSIONAL CONSULTATION
     </footer>
   </main>
 </body>

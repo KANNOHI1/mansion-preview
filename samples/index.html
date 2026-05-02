@@ -101,7 +101,8 @@
     .cell.span4 { grid-column: span 4; }
     .cell.span3 { grid-column: span 3; }
     @media (max-width: 720px) {
-      .cell.span8, .cell.span6, .cell.span4, .cell.span3 { grid-column: span 12; }
+      .cell.span8, .cell.span6, .cell.span4 { grid-column: span 12; }
+      .cell.span3 { grid-column: span 6; }
       .breakdown, .ev-cell { grid-column: span 12; }
     }
     .label-row {
@@ -176,7 +177,6 @@
       background: var(--rule);
       border-top: 1px solid var(--rule);
     }
-    @media (max-width: 540px) { .hero-cell .deltas { grid-template-columns: 1fr; } }
     .hero-cell .deltas .d {
       background: var(--paper);
       padding: 14px 0 4px;
@@ -213,7 +213,7 @@
       margin: 0;
       font-family: "Noto Sans", sans-serif;
       font-weight: 400;
-      font-size: 22px;
+      font-size: 20px;
       letter-spacing: -0.01em;
       color: var(--ink);
       font-feature-settings: "tnum" 1;
@@ -266,50 +266,64 @@
     }
     .scen {
       grid-column: span 12;
-      padding: 0;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
     }
-    .scen table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: "Noto Sans", sans-serif;
+    .scen-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 16px;
+      padding: 16px 18px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
     }
-    .scen th, .scen td {
-      padding: 14px 18px;
-      text-align: left;
-      border-bottom: 1px solid var(--rule);
-      font-size: 13px;
-      vertical-align: baseline;
+    .scen-card.std { background: #f0f7ff; border-color: var(--blue); }
+    .scen-card .name {
+      font-family: "Noto Sans JP", sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
     }
-    .scen th {
+    .scen-card .mult {
       font-family: "Noto Sans Mono", monospace;
-      font-weight: 400;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: right;
+    }
+    .scen-card.std .mult { color: var(--blue); font-weight: 500; }
+    .scen-card .desc {
+      grid-column: 1 / -1;
+      font-family: "Noto Sans JP", sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .scen-card .vals {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding-top: 10px;
+      margin-top: 4px;
+      border-top: 1px solid var(--rule);
+    }
+    .scen-card.std .vals { border-top-color: rgba(15, 98, 254, 0.25); }
+    .scen-card .v-block .lab {
+      font-family: "Noto Sans Mono", monospace;
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--muted);
-      background: #fafafa;
     }
-    .scen td.num {
-      text-align: right;
+    .scen-card .v-block .val {
       font-family: "Noto Sans Mono", monospace;
-      font-feature-settings: "tnum" 1;
-      color: var(--ink);
-      font-size: 14px;
-    }
-    .scen td.name {
+      font-size: 18px;
       font-weight: 500;
       color: var(--ink);
-    }
-    .scen td.name small {
-      display: block;
-      font-weight: 400;
-      color: var(--muted);
-      font-size: 11px;
       margin-top: 2px;
+      font-feature-settings: "tnum" 1;
     }
-    .scen tr.std td { background: #f0f7ff; }
-    .scen tr.std td.name { font-weight: 600; }
-    .scen tr.std td.num { color: var(--blue); }
+    .scen-card.std .v-block .val { color: var(--blue); }
     .breakdown {
       grid-column: span 6;
       padding: 18px;
@@ -331,7 +345,7 @@
     .bd-val {
       font-family: "Noto Sans Mono", monospace;
       font-feature-settings: "tnum" 1;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 500;
       color: var(--ink);
       letter-spacing: -0.005em;
@@ -347,7 +361,7 @@
     .bd-row.total .bd-lab { color: var(--ink); font-weight: 600; }
     .bd-row.total .bd-val {
       font-family: "Noto Sans", sans-serif;
-      font-size: 26px;
+      font-size: 22px;
       font-weight: 400;
       color: var(--ink);
     }
@@ -433,6 +447,50 @@
       background: transparent !important;
       width: 14px;
     }
+    .chart-wrap { position: relative; touch-action: pan-y; }
+    .chart-tooltip {
+      position: absolute;
+      top: 8px;
+      background: var(--ink);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-family: "Noto Sans Mono", monospace;
+      font-size: 11px;
+      pointer-events: none;
+      min-width: 160px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+    .chart-tooltip[hidden] { display: none; }
+    .chart-tooltip .t-month {
+      color: var(--whisper);
+      margin-bottom: 6px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      font-size: 9px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding-bottom: 4px;
+    }
+    .chart-tooltip .t-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 2px 0;
+    }
+    .chart-tooltip .t-row span { color: var(--whisper); }
+    .chart-tooltip .t-row b { font-weight: 500; color: #fff; }
+    .chart-cursor {
+      position: absolute;
+      top: 0;
+      bottom: 36px;
+      width: 1px;
+      background: var(--blue);
+      pointer-events: none;
+      opacity: 0.55;
+      z-index: 1;
+    }
+    .chart-cursor[hidden] { display: none; }
     .legend {
       display: flex;
       flex-wrap: wrap;
@@ -477,7 +535,7 @@
       <div class="ticker">
         <span>NIK<b>41,200</b></span>
         <span>JGB10Y<b>1.05%</b></span>
-        <span>PSM<b>¥1.68M</b></span>
+        <span>PSM<b>¥1,680K</b></span>
         <span>CONF<b>C</b></span>
       </div>
       <div class="ts">REV 2026.05.02 / 09:14 JST</div>
@@ -488,32 +546,32 @@
         <div class="cell hero-cell">
           <div class="head"><span class="tag">PRIMARY</span><span>含み益 / Equity Above Loan</span></div>
           <p class="figure"><span class="yen">¥</span>53,505,861</p>
-          <p class="figure-label">標準成約価格 ¥132,090,000 − ローン残債 ¥78,584,139</p>
+          <p class="figure-label">標準成約価格 ¥132,090K − ローン残債 ¥78,584K</p>
           <div class="deltas">
             <div class="d up"><div class="k">MoM</div><div class="v">+1.40%</div></div>
-            <div class="d up"><div class="k">vs Purchase</div><div class="v">+¥52,290,000</div></div>
+            <div class="d up"><div class="k">vs Purchase</div><div class="v">+¥52,290K</div></div>
             <div class="d"><div class="k">Confidence</div><div class="v">C / Asking-adj</div></div>
           </div>
         </div>
 
         <div class="cell span3 kpi">
           <p class="k">Sale · STD</p>
-          <p class="v"><span class="yen">¥</span>132,090,000</p>
+          <p class="v"><span class="yen">¥</span>132,090K</p>
           <p class="n">標準成約価格</p>
         </div>
         <div class="cell span3 kpi">
           <p class="k">Net · STD</p>
-          <p class="v"><span class="yen">¥</span>46,531,891</p>
+          <p class="v"><span class="yen">¥</span>46,532K</p>
           <p class="n">税後手残り（概算）</p>
         </div>
         <div class="cell span3 kpi">
           <p class="k">Loan</p>
-          <p class="v"><span class="yen">¥</span>78,584,139</p>
+          <p class="v"><span class="yen">¥</span>78,584K</p>
           <p class="n">2026-05-02基準</p>
         </div>
         <div class="cell span3 kpi">
           <p class="k">Monthly</p>
-          <p class="v"><span class="yen">¥</span>221,073</p>
+          <p class="v"><span class="yen">¥</span>221K</p>
           <p class="n">0.96% 団信込／毎月27日</p>
         </div>
 
@@ -522,16 +580,33 @@
           <span class="meta">3 ROWS · BY SPEED</span>
         </div>
         <div class="cell scen">
-          <table>
-            <thead>
-              <tr><th>Scenario</th><th class="num" style="text-align:right">Multiplier</th><th class="num" style="text-align:right">Sale Price</th><th class="num" style="text-align:right">Net Proceeds</th></tr>
-            </thead>
-            <tbody>
-              <tr><td class="name">Early · 早期売却<small>90日以内成約見込み</small></td><td class="num">×0.95</td><td class="num">¥125,485,500</td><td class="num">¥41,002,300</td></tr>
-              <tr class="std"><td class="name">Standard · 標準売却<small>3〜6ヶ月／採用根拠の中央値</small></td><td class="num">×1.00</td><td class="num">¥132,090,000</td><td class="num">¥46,531,891</td></tr>
-              <tr><td class="name">Strong · 強気売却<small>買主厳選</small></td><td class="num">×1.07</td><td class="num">¥141,336,300</td><td class="num">¥54,194,200</td></tr>
-            </tbody>
-          </table>
+          <div class="scen-card">
+            <div class="name">早期</div>
+            <div class="mult">×0.95</div>
+            <div class="desc">90日以内成約見込み</div>
+            <div class="vals">
+              <div class="v-block"><div class="lab">SALE</div><div class="val">¥125,486K</div></div>
+              <div class="v-block"><div class="lab">NET</div><div class="val">¥41,002K</div></div>
+            </div>
+          </div>
+          <div class="scen-card std">
+            <div class="name">標準 ★</div>
+            <div class="mult">×1.00</div>
+            <div class="desc">3〜6ヶ月／採用根拠の中央値</div>
+            <div class="vals">
+              <div class="v-block"><div class="lab">SALE</div><div class="val">¥132,090K</div></div>
+              <div class="v-block"><div class="lab">NET</div><div class="val">¥46,532K</div></div>
+            </div>
+          </div>
+          <div class="scen-card">
+            <div class="name">強気</div>
+            <div class="mult">×1.07</div>
+            <div class="desc">買主厳選</div>
+            <div class="vals">
+              <div class="v-block"><div class="lab">SALE</div><div class="val">¥141,336K</div></div>
+              <div class="v-block"><div class="lab">NET</div><div class="val">¥54,194K</div></div>
+            </div>
+          </div>
         </div>
 
         <div class="section-title">
@@ -543,27 +618,27 @@
           <ul class="bd">
             <li class="bd-row pos">
               <div class="bd-lab">売却価格</div>
-              <div class="bd-val">+132,090,000</div>
+              <div class="bd-val">+¥132,090K</div>
             </li>
             <li class="bd-row neg">
               <div class="bd-lab">ローン残債</div>
-              <div class="bd-val">−78,584,139</div>
+              <div class="bd-val">−¥78,584K</div>
             </li>
             <li class="bd-row neg">
               <div class="bd-lab">仲介手数料</div>
-              <div class="bd-val">−4,423,970</div>
+              <div class="bd-val">−¥4,424K</div>
             </li>
             <li class="bd-row neg">
               <div class="bd-lab">諸費用</div>
-              <div class="bd-val">−350,000</div>
+              <div class="bd-val">−¥350K</div>
             </li>
             <li class="bd-row neg">
               <div class="bd-lab">譲渡税</div>
-              <div class="bd-val">−2,200,000</div>
+              <div class="bd-val">−¥2,200K</div>
             </li>
             <li class="bd-row total">
               <div class="bd-lab">税後手残り</div>
-              <div class="bd-val">¥46,531,891</div>
+              <div class="bd-val">¥46,532K</div>
             </li>
           </ul>
         </div>
@@ -572,23 +647,23 @@
           <div class="ev">
             <article class="e selected">
               <div class="lab">SAME-BLDG ASKING · Conf C</div>
-              <div class="pp">¥1,620,000 /㎡</div>
+              <div class="pp">¥1,620K /㎡</div>
               <div class="nt">公開売出単価を成約寄りに補正・採用中</div>
             </article>
             <article class="e">
               <div class="lab">WANGAN AREA · Conf D</div>
-              <div class="pp">¥1,410,000 /㎡</div>
+              <div class="pp">¥1,410K /㎡</div>
               <div class="nt">広域指標。建物個別性を反映しない</div>
             </article>
           </div>
           <div class="flow">
-            <div class="fr"><span class="label">BASE PSM</span><span class="val">¥1,620,000</span></div>
+            <div class="fr"><span class="label">BASE PSM</span><span class="val">¥1,620K</span></div>
             <div class="fr"><span class="label">ASK→SOLD ADJ</span><span class="val">+8.0%</span></div>
-            <div class="fr"><span class="label">ADJUSTED PSM</span><span class="val">¥1,749,600</span></div>
-            <div class="fr"><span class="label">AREA × 76.5</span><span class="val">¥133,844,400</span></div>
+            <div class="fr"><span class="label">ADJUSTED PSM</span><span class="val">¥1,750K</span></div>
+            <div class="fr"><span class="label">AREA × 76.5</span><span class="val">¥133,844K</span></div>
             <div class="fr"><span class="label">UNIT ADJ</span><span class="val">+5.0%</span></div>
             <div class="fr"><span class="label">MARKET ADJ</span><span class="val">−6.0%</span></div>
-            <div class="fr total"><span class="label">STANDARD</span><span class="val">¥132,090,000</span></div>
+            <div class="fr total"><span class="label">STANDARD</span><span class="val">¥132,090K</span></div>
           </div>
         </div>
 
@@ -606,38 +681,50 @@
             <span>Y · ¥ MILLIONS</span>
             <span>X · MONTHS · 0 / 24 / 60 / 120</span>
           </div>
-          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <defs>
-              <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="600" height="220" fill="url(#grid1)"/>
-            <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
-            <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
+          <div class="chart-wrap" data-chart="1">
+            <svg id="chart1" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <defs>
+                <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
+                  <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="600" height="220" fill="url(#grid1)"/>
+              <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
+              <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
 
-            <!-- 含み益エリア: 標準成約価格(下端) と 残債(上端) で囲んだ領域を薄塗り -->
-            <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
-                  fill="#0f62fe" fill-opacity="0.06" stroke="none"/>
+              <!-- 含み益エリア: 標準成約価格(下端) と 残債(上端) で囲んだ領域を薄塗り -->
+              <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
+                    fill="#0f62fe" fill-opacity="0.06" stroke="none"/>
 
-            <!-- ベア成約価格(灰細) -->
-            <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
-            <!-- ブル成約価格(緑細) -->
-            <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
-            <!-- 標準成約価格(青太・主役) -->
-            <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
-            <!-- ローン残債(破線) -->
-            <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#161616" stroke-width="1.5" stroke-dasharray="4 4"/>
+              <!-- ベア成約価格(灰細) -->
+              <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
+              <!-- ブル成約価格(緑細) -->
+              <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
+              <!-- 標準成約価格(青太・主役) -->
+              <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
+              <!-- ローン残債(破線) -->
+              <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#161616" stroke-width="1.5" stroke-dasharray="4 4"/>
 
-            <text x="606" y="42" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
-            <text x="606" y="10" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
-            <text x="606" y="118" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
-            <text x="606" y="184" font-size="10" fill="#161616" font-family="Noto Sans Mono" font-weight="500">LOAN</text>
-          </svg>
+              <!-- NOW marker -->
+              <line x1="2" y1="0" x2="2" y2="220" stroke="#0f62fe" stroke-width="1.5" opacity="0.6"/>
+              <text x="6" y="11" font-size="9" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="600">NOW</text>
+              <circle cx="2" cy="82" r="3" fill="#198038" stroke="#fff" stroke-width="1"/>
+              <circle cx="2" cy="90" r="3" fill="#0f62fe" stroke="#fff" stroke-width="1"/>
+              <circle cx="2" cy="98" r="3" fill="#6f6f6f" stroke="#fff" stroke-width="1"/>
+              <circle cx="2" cy="108" r="3" fill="#161616" stroke="#fff" stroke-width="1"/>
+
+              <text x="606" y="42" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
+              <text x="606" y="10" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
+              <text x="606" y="118" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
+              <text x="606" y="184" font-size="10" fill="#161616" font-family="Noto Sans Mono" font-weight="500">LOAN</text>
+            </svg>
+            <div class="chart-cursor" hidden></div>
+            <div class="chart-tooltip" hidden></div>
+          </div>
           <div class="legend">
-            <span><i style="background:#6f6f6f"></i>BEAR 成約 −1.0%/y</span>
-            <span><i style="background:#0f62fe"></i>STD 成約 +1.0%/y</span>
             <span><i style="background:#198038"></i>BULL 成約 +3.0%/y</span>
+            <span><i style="background:#0f62fe"></i>STD 成約 +1.0%/y</span>
+            <span><i style="background:#6f6f6f"></i>BEAR 成約 −1.0%/y</span>
             <span><i class="dashed"></i>LOAN 残債（毎月27日）</span>
           </div>
         </div>
@@ -651,26 +738,36 @@
             <span>Y · ¥ MILLIONS</span>
             <span>X · MONTHS · 0 / 24 / 60 / 120</span>
           </div>
-          <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <defs>
-              <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="600" height="220" fill="url(#grid2)"/>
-            <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
-            <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
-            <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
-            <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
-            <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
-            <text x="606" y="100" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
-            <text x="606" y="50" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
-            <text x="606" y="156" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
-          </svg>
+          <div class="chart-wrap" data-chart="2">
+            <svg id="chart2" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+              <defs>
+                <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
+                  <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="600" height="220" fill="url(#grid2)"/>
+              <line x1="0" y1="220" x2="600" y2="220" stroke="#161616" stroke-width="1"/>
+              <line x1="0" y1="0" x2="0" y2="220" stroke="#161616" stroke-width="1"/>
+              <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#6f6f6f" stroke-width="1.2"/>
+              <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#0f62fe" stroke-width="2.5"/>
+              <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#198038" stroke-width="1.2"/>
+
+              <!-- NOW marker -->
+              <line x1="2" y1="0" x2="2" y2="220" stroke="#0f62fe" stroke-width="1.5" opacity="0.6"/>
+              <text x="6" y="11" font-size="9" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="600">NOW</text>
+              <circle cx="2" cy="150" r="3" fill="#0f62fe" stroke="#fff" stroke-width="1"/>
+
+              <text x="606" y="100" font-size="10" fill="#0f62fe" font-family="Noto Sans Mono" font-weight="500">STD</text>
+              <text x="606" y="50" font-size="10" fill="#198038" font-family="Noto Sans Mono" font-weight="500">BULL</text>
+              <text x="606" y="156" font-size="10" fill="#6f6f6f" font-family="Noto Sans Mono" font-weight="500">BEAR</text>
+            </svg>
+            <div class="chart-cursor" hidden></div>
+            <div class="chart-tooltip" hidden></div>
+          </div>
           <div class="legend">
-            <span><i style="background:#6f6f6f"></i>BEAR · 10Y ¥38.4M</span>
-            <span><i style="background:#0f62fe"></i>STD &nbsp;· 10Y ¥58.7M</span>
-            <span><i style="background:#198038"></i>BULL · 10Y ¥84.2M</span>
+            <span><i style="background:#198038"></i>BULL · 10Y ¥84,200K</span>
+            <span><i style="background:#0f62fe"></i>STD &nbsp;· 10Y ¥58,700K</span>
+            <span><i style="background:#6f6f6f"></i>BEAR · 10Y ¥38,400K</span>
           </div>
         </div>
 
@@ -680,7 +777,7 @@
         </div>
         <div class="cell span4 signal up"><div class="n">NIKKEI 225</div><div class="v">41,200</div><div class="t">↑ MoM +1.80%</div></div>
         <div class="cell span4 signal flat"><div class="n">JGB 10Y YIELD</div><div class="v">1.05%</div><div class="t">→ 0.00pt</div></div>
-        <div class="cell span4 signal warn"><div class="n">WANGAN PSM</div><div class="v">¥1.68M</div><div class="t">↓ MoM −0.60%</div></div>
+        <div class="cell span4 signal warn"><div class="n">WANGAN PSM</div><div class="v">¥1,680K</div><div class="t">↓ MoM −0.60%</div></div>
       </div>
     </div>
 
@@ -688,5 +785,72 @@
       DATA REV 2026.05.02 / LOAN AUTO-UPDATE 27TH / 仲介手数料 3%+6万+消費税 / 諸費用は抵当権抹消・印紙・司法書士等 / CGT ¥30M PRIMARY-RES DEDUCTION ASSUMED / FINAL DECISIONS REQUIRE PROFESSIONAL CONSULTATION
     </footer>
   </main>
+  <script>
+    (function () {
+      const fmtK = (n) => '¥' + Math.round(n).toLocaleString() + 'K';
+      const gen = (start, annualPct) => {
+        const r = annualPct / 100;
+        return Array.from({ length: 121 }, (_, m) => start * Math.pow(1 + r, m / 12));
+      };
+      const genLoan = (start, end) =>
+        Array.from({ length: 121 }, (_, m) => start + (end - start) * (m / 120));
+
+      const charts = [
+        {
+          key: '1',
+          rows: [
+            { label: 'BULL', data: gen(132090, 3),  color: '#198038' },
+            { label: 'STD',  data: gen(132090, 1),  color: '#0f62fe' },
+            { label: 'BEAR', data: gen(132090, -1), color: '#6f6f6f' },
+            { label: 'LOAN', data: genLoan(78584, 50000), color: '#161616' }
+          ]
+        },
+        {
+          key: '2',
+          rows: [
+            { label: 'BULL', data: gen(46532, 6.0),  color: '#198038' },
+            { label: 'STD',  data: gen(46532, 2.3),  color: '#0f62fe' },
+            { label: 'BEAR', data: gen(46532, -1.9), color: '#6f6f6f' }
+          ]
+        }
+      ];
+
+      charts.forEach((c) => {
+        const wrap = document.querySelector(`.chart-wrap[data-chart="${c.key}"]`);
+        if (!wrap) return;
+        const svg = wrap.querySelector('svg');
+        const tip = wrap.querySelector('.chart-tooltip');
+        const cursor = wrap.querySelector('.chart-cursor');
+
+        const update = (clientX) => {
+          const rect = svg.getBoundingClientRect();
+          const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+          const m = Math.round((x / rect.width) * 120);
+          const months = `M ${m} / Y ${(m / 12).toFixed(1)}`;
+          const rowsHTML = c.rows
+            .map(
+              (r) =>
+                `<div class="t-row"><span style="color:${r.color}">${r.label}</span><b>${fmtK(r.data[m])}</b></div>`
+            )
+            .join('');
+          tip.innerHTML = `<div class="t-month">${months}</div>${rowsHTML}`;
+          tip.hidden = false;
+          cursor.hidden = false;
+          cursor.style.left = `${x}px`;
+          const tipW = tip.offsetWidth;
+          const wrapW = wrap.clientWidth;
+          tip.style.left = `${Math.min(Math.max(0, x - tipW / 2), wrapW - tipW)}px`;
+        };
+        const hide = () => {
+          tip.hidden = true;
+          cursor.hidden = true;
+        };
+
+        svg.addEventListener('pointermove', (e) => update(e.clientX));
+        svg.addEventListener('pointerdown', (e) => update(e.clientX));
+        svg.addEventListener('pointerleave', hide);
+      });
+    })();
+  </script>
 </body>
 </html>

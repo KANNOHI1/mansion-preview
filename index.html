@@ -1,345 +1,571 @@
 <!doctype html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
-    <title>Mansion Asset Preview</title>
-    <style>
-      :root {
-        --bg: #101417;
-        --panel: #171d22;
-        --panel-2: #202830;
-        --ink: #f3f0e8;
-        --muted: #aab4bb;
-        --line: #33414a;
-        --gold: #d7b46a;
-        --cyan: #68c7bf;
-        --red: #df7b65;
-        --green: #86c38a;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>資産 — Asset Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card: #ffffff;
+      --label: #3c3c43;
+      --label-2: rgba(60,60,67,0.6);
+      --label-3: rgba(60,60,67,0.4);
+      --hairline: #d2d2d7;
+      --hairline-soft: #e5e5ea;
+      --blue: #007aff;
+      --blue-soft: #e5f0ff;
+      --green: #34c759;
+      --red: #ff3b30;
+      --gray: #8e8e93;
+      --ink: #1c1c1e;
+      --radius: 14px;
+      --pad: 16px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--label);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter",
+                   "Hiragino Kaku Gothic ProN", "Yu Gothic",
+                   "Noto Sans JP", sans-serif;
+      font-feature-settings: "tnum" 1;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: 0;
+      line-height: 1.4;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 36px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
 
-      * {
-        box-sizing: border-box;
-      }
+    /* ① Page header */
+    .page-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0 4px;
+      margin-bottom: 4px;
+    }
+    .page-head .title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .page-head .date {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--label-2);
+      font-feature-settings: "tnum" 1;
+    }
 
-      body {
-        margin: 0;
-        background:
-          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-          radial-gradient(circle at top right, rgba(104, 199, 191, 0.16), transparent 32rem),
-          var(--bg);
-        background-size: 32px 32px, 32px 32px, auto, auto;
-        color: var(--ink);
-        font-family:
-          "Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", system-ui,
-          sans-serif;
-        letter-spacing: 0;
-      }
+    /* Card common */
+    .card {
+      background: var(--card);
+      border: 0.5px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: var(--pad);
+    }
+    .sec-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--label-2);
+      letter-spacing: 0.01em;
+      margin: 0 0 8px;
+    }
+    .row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-top: 0.5px solid var(--hairline-soft);
+      gap: 12px;
+    }
+    .row:first-of-type { border-top: 0.5px solid var(--hairline); }
+    .row .lab {
+      font-size: 15px;
+      color: var(--label);
+    }
+    .row .val {
+      font-size: 15px;
+      color: var(--ink);
+      font-feature-settings: "tnum" 1;
+      text-align: right;
+    }
+    .row.total {
+      border-top: 0.5px solid var(--hairline);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+    .row.total .lab { font-weight: 600; color: var(--ink); }
+    .row.total .val { font-weight: 600; color: var(--blue); font-size: 17px; }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
 
-      main {
-        width: min(1120px, 100%);
-        margin: 0 auto;
-        padding: 20px;
-      }
+    /* ② Hero */
+    .hero .figure {
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1.05;
+      margin: 4px 0 8px;
+      font-feature-settings: "tnum" 1;
+    }
+    .hero .delta {
+      font-size: 15px;
+      color: var(--green);
+      font-weight: 500;
+      margin-bottom: 14px;
+      font-feature-settings: "tnum" 1;
+    }
+    .hero .delta .delta-lab {
+      color: var(--label-2);
+      font-weight: 400;
+      margin-left: 8px;
+    }
+    .hero .rows { margin-top: 4px; }
 
-      .topbar,
-      .hero,
-      .card,
-      .rail {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: rgba(23, 29, 34, 0.88);
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
-      }
+    /* ③ KPI 2×2 */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .kpi {
+      background: var(--card);
+      border: 0.5px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .kpi .lab {
+      font-size: 13px;
+      color: var(--label-2);
+      margin-bottom: 6px;
+    }
+    .kpi .val {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      font-feature-settings: "tnum" 1;
+    }
 
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: center;
-        padding: 12px 14px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
+    /* ④ Scenarios — 3 mini cards */
+    .scen-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .scen-tile {
+      background: var(--card);
+      border: 0.5px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .scen-tile.std {
+      background: var(--blue-soft);
+      border-color: var(--blue);
+    }
+    .scen-tile .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: 0.5px solid var(--hairline-soft);
+    }
+    .scen-tile.std .head { border-bottom-color: rgba(0,122,255,0.2); }
+    .scen-tile .name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .scen-tile.std .name { color: var(--blue); }
+    .scen-tile .mult {
+      font-size: 12px;
+      color: var(--label-2);
+      font-feature-settings: "tnum" 1;
+    }
+    .scen-tile.std .mult { color: var(--blue); }
+    .scen-tile .kv {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 13px;
+      padding: 3px 0;
+    }
+    .scen-tile .kv .lab { color: var(--label-2); }
+    .scen-tile .kv .val {
+      color: var(--ink);
+      font-weight: 500;
+      font-feature-settings: "tnum" 1;
+    }
+    .scen-tile.std .kv .val { color: var(--blue); }
+    @media (max-width: 480px) {
+      .scen-grid { grid-template-columns: 1fr; }
+    }
 
-      .hero {
-        margin-top: 14px;
-        padding: 22px;
-      }
+    /* ⑦ Charts */
+    .chart-card { padding: 14px 14px 12px; }
+    .chart-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding: 2px 4px 12px;
+    }
+    .chart-head .title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .chart-head .scrub-month {
+      font-size: 13px;
+      color: var(--label-2);
+      font-feature-settings: "tnum" 1;
+    }
+    .chart-vals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      padding: 0 4px 10px;
+      font-size: 12px;
+      font-feature-settings: "tnum" 1;
+    }
+    .chart-vals .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chart-vals .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      display: inline-block;
+    }
+    .chart-vals .pill .lab { color: var(--label-2); }
+    .chart-vals .pill .val { color: var(--ink); font-weight: 500; }
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      touch-action: pan-y;
+    }
+    .chart-wrap svg {
+      display: block;
+      width: 100%;
+      height: 200px;
+      overflow: visible;
+    }
+    .chart-cursor {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--blue);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    .chart-cursor[hidden] { display: none; }
 
-      .eyebrow {
-        margin: 0 0 10px;
-        color: var(--cyan);
-        font-size: 12px;
-        font-weight: 800;
-        text-transform: uppercase;
-      }
+    /* footer */
+    footer {
+      font-size: 11px;
+      color: var(--label-3);
+      text-align: center;
+      padding: 8px 4px 0;
+      line-height: 1.6;
+    }
 
-      h1 {
-        margin: 0;
-        font-size: clamp(34px, 11vw, 76px);
-        line-height: 0.95;
-      }
+    /* Mobile fine-tuning */
+    @media (max-width: 480px) {
+      .hero .figure { font-size: 44px; }
+      .kpi .val { font-size: 19px; }
+      main { padding: 28px 14px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- ① Page header -->
+    <div class="page-head">
+      <div class="title">資産</div>
+      <div class="date">2026.05.03</div>
+    </div>
 
-      .lead {
-        max-width: 720px;
-        margin: 14px 0 0;
-        color: var(--muted);
-        font-size: 15px;
-        line-height: 1.75;
-      }
-
-      .kpis {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 14px;
-      }
-
-      .card {
-        min-height: 142px;
-        padding: 16px;
-      }
-
-      .card span,
-      .rail span,
-      .row span {
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .card strong {
-        display: block;
-        margin-top: 12px;
-        color: var(--gold);
-        font-size: clamp(24px, 7vw, 42px);
-        line-height: 1;
-      }
-
-      .card p {
-        margin: 10px 0 0;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.55;
-      }
-
-      .range {
-        display: block;
-        margin-top: 8px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.45;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-        gap: 14px;
-        margin-top: 14px;
-      }
-
-      .rail {
-        padding: 18px;
-      }
-
-      h2 {
-        margin: 0 0 14px;
-        font-size: 22px;
-      }
-
-      .rows {
-        display: grid;
-        gap: 1px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--line);
-      }
-
-      .row {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 12px;
-        align-items: center;
-        padding: 13px;
-        background: var(--panel);
-      }
-
-      .row strong {
-        color: var(--ink);
-        text-align: right;
-      }
-
-      .ok {
-        color: var(--green);
-      }
-
-      .warn {
-        color: var(--red);
-      }
-
-      .tagline {
-        display: inline-flex;
-        min-height: 28px;
-        align-items: center;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 4px 10px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .status-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .status {
-        min-height: 92px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 12px;
-        background: var(--panel-2);
-      }
-
-      .status strong {
-        display: block;
-        margin-top: 8px;
-        font-size: 18px;
-      }
-
-      .footnote {
-        margin: 14px 0 0;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.7;
-      }
-
-      @media (max-width: 820px) {
-        main {
-          padding: 12px;
-        }
-
-        .topbar {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .kpis,
-        .grid {
-          grid-template-columns: 1fr;
-        }
-
-        .card {
-          min-height: 116px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <div class="topbar">
-        <span>Mansion Asset Preview</span>
-        <span>スマホ確認用 / Public-safe view</span>
-      </div>
-
-      <section class="hero">
-        <p class="eyebrow">Owner command dashboard</p>
-        <h1>資産判断の<br />公開プレビュー</h1>
-        <p class="lead">
-          住所・マンション名・部屋番号は出さずに、判断に必要な実額だけをスマホで確認するための軽量版です。
-          リンクを知っている人は閲覧できるため、物件特定情報は引き続き非公開にしています。
-        </p>
-      </section>
-
-      <section class="kpis" aria-label="主要指標">
-        <article class="card">
-          <span>推定成約価格</span>
-          <strong>128,490,624円</strong>
-          <p>標準売却の中心値。</p>
-          <em class="range">早期 124,635,905円 / 強気 134,915,155円</em>
-        </article>
-        <article class="card">
-          <span>標準手残り</span>
-          <strong>39,380,562円</strong>
-          <p>売却費用・ローン控除後の管理用概算。</p>
-        </article>
-        <article class="card">
-          <span>ローン残債</span>
-          <strong>78,584,139円</strong>
-          <p>2026-05-02基準。月額 221,073円。</p>
-        </article>
-        <article class="card">
-          <span>固定費</span>
-          <strong>554,340円/年</strong>
-          <p>管理・修繕 32,620円/月 + 固定資産税等 162,900円/年。</p>
-        </article>
-      </section>
-
-      <section class="grid">
-        <div class="rail">
-          <h2>実データと概算の分離</h2>
-          <div class="rows">
-            <div class="row">
-              <span>購入価格・ローン条件</span>
-              <strong class="ok">79,800,000円 / 84,300,000円</strong>
-            </div>
-            <div class="row">
-              <span>固定資産税・都市計画税</span>
-              <strong class="ok">162,900円/年</strong>
-            </div>
-            <div class="row">
-              <span>管理費・修繕積立金</span>
-              <strong class="ok">32,620円/月</strong>
-            </div>
-            <div class="row">
-              <span>購入時支出の確認済み小計</span>
-              <strong class="ok">2,545,700円</strong>
-            </div>
-            <div class="row">
-              <span>土地/建物内訳</span>
-              <strong class="warn">概算扱い</strong>
-            </div>
-            <div class="row">
-              <span>減価償却</span>
-              <strong class="warn">売却前に精査</strong>
-            </div>
-          </div>
+    <!-- ② Hero -->
+    <section class="card hero">
+      <div class="sec-label">利益</div>
+      <div class="figure">¥45,316,030</div>
+      <div class="delta">+ ¥1.2M<span class="delta-lab">前月比</span></div>
+      <div class="rows">
+        <div class="row">
+          <span class="lab">信頼度</span>
+          <span class="val">標準（±5%）</span>
         </div>
+        <div class="row">
+          <span class="lab">内訳</span>
+          <span class="val">売却 − 購入 − 諸経費</span>
+        </div>
+      </div>
+    </section>
 
-        <aside class="rail">
-          <h2>次に見る場所</h2>
-          <div class="status-grid">
-            <div class="status">
-              <span>判断</span>
-              <strong>持つ / 売る / 貸す</strong>
-            </div>
-            <div class="status">
-              <span>精度</span>
-              <strong>根拠別に表示</strong>
-            </div>
-            <div class="status">
-              <span>市況</span>
-              <strong>湾岸・金利</strong>
-            </div>
-            <div class="status">
-              <span>資料</span>
-              <strong>追加時に更新</strong>
-            </div>
-          </div>
-          <p class="footnote">
-            このページはリンク確認用です。金額は表示しますが、住所、マンション名、部屋番号は公開しません。
-          </p>
-          <p class="tagline">GitHub Pages preview</p>
-        </aside>
-      </section>
-    </main>
-  </body>
+    <!-- ③ KPI 2×2 -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="lab">標準成約</div>
+        <div class="val">¥132.1M</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">税後手残</div>
+        <div class="val">¥46.5M</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">ローン残債</div>
+        <div class="val">¥78.6M</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">月額返済</div>
+        <div class="val">¥221K</div>
+      </div>
+    </div>
+
+    <!-- ④ Scenarios -->
+    <div class="scen-grid">
+      <div class="scen-tile">
+        <div class="head"><span class="name">早期</span><span class="mult">×0.95</span></div>
+        <div class="kv"><span class="lab">成約</span><span class="val">¥125.5M</span></div>
+        <div class="kv"><span class="lab">手残</span><span class="val">¥41.0M</span></div>
+      </div>
+      <div class="scen-tile std">
+        <div class="head"><span class="name">標準 ★</span><span class="mult">×1.00</span></div>
+        <div class="kv"><span class="lab">成約</span><span class="val">¥132.1M</span></div>
+        <div class="kv"><span class="lab">手残</span><span class="val">¥46.5M</span></div>
+      </div>
+      <div class="scen-tile">
+        <div class="head"><span class="name">強気</span><span class="mult">×1.07</span></div>
+        <div class="kv"><span class="lab">成約</span><span class="val">¥141.3M</span></div>
+        <div class="kv"><span class="lab">手残</span><span class="val">¥54.2M</span></div>
+      </div>
+    </div>
+
+    <!-- ⑤ Breakdown -->
+    <section class="card">
+      <div class="sec-label">利益の内訳</div>
+      <div class="row"><span class="lab">売却価格</span><span class="val pos">+¥132.1M</span></div>
+      <div class="row"><span class="lab">購入価格</span><span class="val neg">−¥79.8M</span></div>
+      <div class="row"><span class="lab">仲介手数料</span><span class="val neg">−¥4.4M</span></div>
+      <div class="row"><span class="lab">諸費用</span><span class="val neg">−¥0.4M</span></div>
+      <div class="row"><span class="lab">譲渡税</span><span class="val neg">−¥2.2M</span></div>
+      <div class="row total"><span class="lab">利益</span><span class="val">¥45.3M</span></div>
+    </section>
+
+    <!-- ⑥a Evidence -->
+    <section class="card">
+      <div class="sec-label">評価根拠（PSM比較）</div>
+      <div class="row"><span class="lab">同マンション売出</span><span class="val">¥1.6M /㎡</span></div>
+      <div class="row"><span class="lab">湾岸・江東区平均</span><span class="val">¥1.4M /㎡</span></div>
+    </section>
+
+    <!-- ⑥b Adjustment flow -->
+    <section class="card">
+      <div class="sec-label">価格調整フロー</div>
+      <div class="row"><span class="lab">基準㎡単価</span><span class="val">¥1.6M</span></div>
+      <div class="row"><span class="lab">売出→成約補正</span><span class="val">×1.08</span></div>
+      <div class="row"><span class="lab">補正後㎡単価</span><span class="val">¥1.8M</span></div>
+      <div class="row"><span class="lab">面積反映 (×76.5㎡)</span><span class="val">¥133.8M</span></div>
+      <div class="row"><span class="lab">住戸補正</span><span class="val">×0.99</span></div>
+      <div class="row"><span class="lab">市況補正</span><span class="val">×1.00</span></div>
+      <div class="row total"><span class="lab">標準成約</span><span class="val">¥132.1M</span></div>
+    </section>
+
+    <!-- ⑦ Chart 1: 売却価格 × ローン残債 -->
+    <section class="card chart-card">
+      <div class="chart-head">
+        <span class="title">売却価格 × ローン残債</span>
+        <span class="scrub-month" data-chart-month="1">2026年5月（現在）</span>
+      </div>
+      <div class="chart-vals">
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="1-bull">¥132.1M</span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="1-std">¥132.1M</span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="1-bear">¥132.1M</span></span>
+        <span class="pill"><span class="dot" style="background:#1c1c1e"></span><span class="lab">ローン</span><span class="val" data-scrub="1-loan">¥78.6M</span></span>
+      </div>
+      <div class="chart-wrap" data-chart="1">
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="600" height="220" fill="url(#grid1)"/>
+          <line x1="0" y1="220" x2="600" y2="220" stroke="#d2d2d7" stroke-width="1"/>
+
+          <!-- 含み益エリア -->
+          <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
+                fill="#007aff" fill-opacity="0.05" stroke="none"/>
+
+          <!-- 弱気 -->
+          <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#8e8e93" stroke-width="1.2"/>
+          <!-- 強気 -->
+          <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#34c759" stroke-width="1.4"/>
+          <!-- 標準 -->
+          <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#007aff" stroke-width="2.5"/>
+          <!-- ローン残債(破線) -->
+          <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#1c1c1e" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+          <!-- NOW marker -->
+          <line x1="2" y1="0" x2="2" y2="220" stroke="#007aff" stroke-width="1.5" opacity="0.55"/>
+          <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
+          <circle cx="2" cy="82" r="3" fill="#34c759" stroke="#fff" stroke-width="1"/>
+          <circle cx="2" cy="90" r="3" fill="#007aff" stroke="#fff" stroke-width="1"/>
+          <circle cx="2" cy="98" r="3" fill="#8e8e93" stroke="#fff" stroke-width="1"/>
+          <circle cx="2" cy="108" r="3" fill="#1c1c1e" stroke="#fff" stroke-width="1"/>
+
+        </svg>
+        <div class="chart-cursor" hidden></div>
+      </div>
+    </section>
+
+    <!-- ⑦ Chart 2: 税後手残り -->
+    <section class="card chart-card">
+      <div class="chart-head">
+        <span class="title">税後手残り推移</span>
+        <span class="scrub-month" data-chart-month="2">2026年5月（現在）</span>
+      </div>
+      <div class="chart-vals">
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull">¥46.5M</span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std">¥46.5M</span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear">¥46.5M</span></span>
+      </div>
+      <div class="chart-wrap" data-chart="2">
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="600" height="220" fill="url(#grid2)"/>
+          <line x1="0" y1="220" x2="600" y2="220" stroke="#d2d2d7" stroke-width="1"/>
+
+          <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#8e8e93" stroke-width="1.2"/>
+          <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#007aff" stroke-width="2.5"/>
+          <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#34c759" stroke-width="1.4"/>
+
+          <!-- NOW marker -->
+          <line x1="2" y1="0" x2="2" y2="220" stroke="#007aff" stroke-width="1.5" opacity="0.55"/>
+          <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
+          <circle cx="2" cy="150" r="3.5" fill="#007aff" stroke="#fff" stroke-width="1"/>
+
+        </svg>
+        <div class="chart-cursor" hidden></div>
+      </div>
+    </section>
+
+    <!-- ⑧ Market signals -->
+    <section class="card">
+      <div class="sec-label">市況シグナル</div>
+      <div class="row"><span class="lab">日経平均</span><span class="val">41,200 <span class="pos">+0.4%</span></span></div>
+      <div class="row"><span class="lab">JGB 10年利回り</span><span class="val">1.05% <span class="pos">+0.02pt</span></span></div>
+      <div class="row"><span class="lab">湾岸㎡単価</span><span class="val">¥1.7M <span class="pos">+1.8%</span></span></div>
+    </section>
+
+    <!-- ⑨ Footer -->
+    <footer>
+      データ最終更新 2026.05.03 ／ 個人用プロトタイプ
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      const START_Y = 2026, START_M = 5; // NOW = 2026年5月（起点・固定）
+      const fmtM = (nK) => '¥' + (nK / 1000).toFixed(1) + 'M';
+      const monthLabel = (m) => {
+        if (m === 0) return '2026年5月（現在）';
+        const total = (START_M - 1) + m;
+        const y = START_Y + Math.floor(total / 12);
+        const mo = (total % 12) + 1;
+        return `${y}年${mo}月`;
+      };
+      const gen = (start, annualPct) => {
+        const r = annualPct / 100;
+        return Array.from({ length: 121 }, (_, m) => start * Math.pow(1 + r, m / 12));
+      };
+      const genLoan = (start, end) =>
+        Array.from({ length: 121 }, (_, m) => start + (end - start) * (m / 120));
+
+      const charts = [
+        {
+          key: '1',
+          rows: [
+            { label: 'bull', data: gen(132090, 3) },
+            { label: 'std',  data: gen(132090, 1) },
+            { label: 'bear', data: gen(132090, -1) },
+            { label: 'loan', data: genLoan(78584, 50000) }
+          ]
+        },
+        {
+          key: '2',
+          rows: [
+            { label: 'bull', data: gen(46532, 6.0) },
+            { label: 'std',  data: gen(46532, 2.3) },
+            { label: 'bear', data: gen(46532, -1.9) }
+          ]
+        }
+      ];
+
+      charts.forEach((c) => {
+        const wrap = document.querySelector(`.chart-wrap[data-chart="${c.key}"]`);
+        if (!wrap) return;
+        const svg = wrap.querySelector('svg');
+        const cursor = wrap.querySelector('.chart-cursor');
+        const monthEl = document.querySelector(`[data-chart-month="${c.key}"]`);
+        const valEls = {};
+        c.rows.forEach((r) => {
+          valEls[r.label] = document.querySelector(`[data-scrub="${c.key}-${r.label}"]`);
+        });
+
+        const setMonth = (m) => {
+          monthEl.textContent = monthLabel(m);
+        };
+
+        const update = (clientX) => {
+          const svgRect = svg.getBoundingClientRect();
+          const wrapRect = wrap.getBoundingClientRect();
+          const xRatio = Math.max(0, Math.min(1, (clientX - svgRect.left) / svgRect.width));
+          const m = Math.round(xRatio * 120);
+          setMonth(m);
+          c.rows.forEach((r) => {
+            if (valEls[r.label]) valEls[r.label].textContent = fmtM(r.data[m]);
+          });
+          cursor.hidden = false;
+          cursor.style.left = `${(svgRect.left - wrapRect.left) + xRatio * svgRect.width}px`;
+        };
+
+        const resetScrub = () => {
+          setMonth(0);
+          c.rows.forEach((r) => {
+            if (valEls[r.label]) valEls[r.label].textContent = fmtM(r.data[0]);
+          });
+          cursor.hidden = true;
+        };
+
+        wrap.addEventListener('pointermove', (e) => update(e.clientX));
+        wrap.addEventListener('pointerdown', (e) => update(e.clientX));
+        wrap.addEventListener('pointerleave', resetScrub);
+        wrap.addEventListener('pointerup', resetScrub);
+        wrap.addEventListener('pointercancel', resetScrub);
+      });
+    })();
+  </script>
+</body>
 </html>

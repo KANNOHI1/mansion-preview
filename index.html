@@ -411,36 +411,19 @@
         <span class="pill"><span class="dot" style="background:#1c1c1e"></span><span class="lab">ローン</span><span class="val" data-scrub="1-loan">¥78.6M</span></span>
       </div>
       <div class="chart-wrap" data-chart="1">
-        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <defs>
-            <pattern id="grid1" width="60" height="44" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
+            <pattern id="grid1" width="60" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 40" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
             </pattern>
           </defs>
-          <rect width="600" height="220" fill="url(#grid1)"/>
-          <line x1="0" y1="220" x2="600" y2="220" stroke="#d2d2d7" stroke-width="1"/>
-
-          <!-- 含み益エリア -->
-          <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40 L600,180 C500,168 400,156 300,144 S100,118 0,108 Z"
-                fill="#007aff" fill-opacity="0.05" stroke="none"/>
-
-          <!-- 弱気 -->
-          <path d="M0,98 C100,98 200,100 300,102 S500,108 600,116" fill="none" stroke="#8e8e93" stroke-width="1.2"/>
-          <!-- 強気 -->
-          <path d="M0,82 C100,72 200,60 300,48 S500,24 600,8" fill="none" stroke="#34c759" stroke-width="1.4"/>
-          <!-- 標準 -->
-          <path d="M0,90 C100,82 200,74 300,66 S500,52 600,40" fill="none" stroke="#007aff" stroke-width="2.5"/>
-          <!-- ローン残債(破線) -->
-          <path d="M0,108 C100,118 200,128 300,144 S500,168 600,180" fill="none" stroke="#1c1c1e" stroke-width="1.4" stroke-dasharray="4 4"/>
-
-          <!-- NOW marker -->
-          <line x1="2" y1="0" x2="2" y2="220" stroke="#007aff" stroke-width="1.5" opacity="0.55"/>
-          <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
-          <circle cx="2" cy="82" r="3" fill="#34c759" stroke="#fff" stroke-width="1"/>
-          <circle cx="2" cy="90" r="3" fill="#007aff" stroke="#fff" stroke-width="1"/>
-          <circle cx="2" cy="98" r="3" fill="#8e8e93" stroke="#fff" stroke-width="1"/>
-          <circle cx="2" cy="108" r="3" fill="#1c1c1e" stroke="#fff" stroke-width="1"/>
-
+          <rect x="40" y="10" width="600" height="200" fill="url(#grid1)"/>
+          <line x1="40" y1="210" x2="640" y2="210" stroke="#d2d2d7" stroke-width="1"/>
+          <g class="x-axis"></g>
+          <g class="y-axis"></g>
+          <g class="area"></g>
+          <g class="series"></g>
+          <g class="now"></g>
         </svg>
         <div class="chart-cursor" hidden></div>
       </div>
@@ -458,24 +441,19 @@
         <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear">¥23.0M</span></span>
       </div>
       <div class="chart-wrap" data-chart="2">
-        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
           <defs>
-            <pattern id="grid2" width="60" height="44" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 44" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
+            <pattern id="grid2" width="60" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 40" fill="none" stroke="#e5e5ea" stroke-width="0.5"/>
             </pattern>
           </defs>
-          <rect width="600" height="220" fill="url(#grid2)"/>
-          <line x1="0" y1="220" x2="600" y2="220" stroke="#d2d2d7" stroke-width="1"/>
-
-          <path d="M0,150 C100,148 200,140 300,128 S500,108 600,98" fill="none" stroke="#8e8e93" stroke-width="1.2"/>
-          <path d="M0,150 C100,138 200,118 300,98 S500,68 600,48" fill="none" stroke="#007aff" stroke-width="2.5"/>
-          <path d="M0,150 C100,128 200,98 300,68 S500,28 600,8" fill="none" stroke="#34c759" stroke-width="1.4"/>
-
-          <!-- NOW marker -->
-          <line x1="2" y1="0" x2="2" y2="220" stroke="#007aff" stroke-width="1.5" opacity="0.55"/>
-          <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
-          <circle cx="2" cy="150" r="3.5" fill="#007aff" stroke="#fff" stroke-width="1"/>
-
+          <rect x="40" y="10" width="600" height="200" fill="url(#grid2)"/>
+          <line x1="40" y1="210" x2="640" y2="210" stroke="#d2d2d7" stroke-width="1"/>
+          <g class="x-axis"></g>
+          <g class="y-axis"></g>
+          <g class="area"></g>
+          <g class="series"></g>
+          <g class="now"></g>
         </svg>
         <div class="chart-cursor" hidden></div>
       </div>
@@ -544,6 +522,106 @@
           valEls[r.label] = document.querySelector(`[data-scrub="${c.key}-${r.label}"]`);
         });
 
+        // 描画領域定数（viewBox 0 0 660 250、左右上下に軸ラベル余白を確保）
+        const RX0 = 40, RX1 = 640, RY0 = 10, RY1 = 210;
+        const RW = RX1 - RX0;
+        const RH = RY1 - RY0;
+        const VB_W = 660;
+
+        // データから min/max スケール算出
+        const allValues = c.rows.flatMap((r) => r.data);
+        const minVal = Math.min(...allValues);
+        const maxVal = Math.max(...allValues);
+        const padding = (maxVal - minVal) * 0.05 || 1;
+        const yMin = minVal - padding;
+        const yMax = maxVal + padding;
+
+        const xMap = (m) => RX0 + (m / 120) * RW;
+        const yMap = (v) => RY1 - ((v - yMin) / (yMax - yMin)) * RH;
+
+        const NS = 'http://www.w3.org/2000/svg';
+        const mk = (tag, attrs, text) => {
+          const el = document.createElementNS(NS, tag);
+          Object.entries(attrs || {}).forEach(([k, v]) => el.setAttribute(k, v));
+          if (text != null) el.textContent = text;
+          return el;
+        };
+
+        const buildLine = (data) =>
+          data.map((v, m) => `${m === 0 ? 'M' : 'L'}${xMap(m).toFixed(1)},${yMap(v).toFixed(1)}`).join('');
+
+        const colors = { bull: '#34c759', std: '#007aff', bear: '#8e8e93', loan: '#1c1c1e' };
+        const widths = { bull: 1.4, std: 2.5, bear: 1.2, loan: 1.4 };
+
+        // 1. 横軸ラベル（2026, 2028, ..., 2036）
+        const xAxis = svg.querySelector('.x-axis');
+        for (let i = 0; i <= 5; i++) {
+          const m = i * 24;
+          xAxis.appendChild(mk('text', {
+            x: xMap(m).toFixed(1), y: 230, 'font-size': 10, fill: '#8e8e93',
+            'text-anchor': 'middle'
+          }, String(2026 + i * 2)));
+        }
+
+        // 2. 縦軸ラベル（4本: yMin..yMax 等分）
+        const yAxis = svg.querySelector('.y-axis');
+        for (let i = 0; i <= 3; i++) {
+          const v = yMin + ((yMax - yMin) * i) / 3;
+          yAxis.appendChild(mk('text', {
+            x: 36, y: (yMap(v) + 3).toFixed(1), 'font-size': 10, fill: '#8e8e93',
+            'text-anchor': 'end'
+          }, fmtM(v)));
+        }
+
+        // 3. 含み益エリア（chart 1 のみ: std と loan で囲まれた領域）
+        const area = svg.querySelector('.area');
+        if (c.key === '1') {
+          const stdRow = c.rows.find((r) => r.label === 'std');
+          const loanRow = c.rows.find((r) => r.label === 'loan');
+          if (stdRow && loanRow) {
+            const stdLine = buildLine(stdRow.data);
+            const loanRev = loanRow.data
+              .slice()
+              .reverse()
+              .map((v, i) => `L${xMap(120 - i).toFixed(1)},${yMap(v).toFixed(1)}`)
+              .join('');
+            area.appendChild(mk('path', {
+              d: stdLine + loanRev + 'Z',
+              fill: '#007aff', 'fill-opacity': '0.06', stroke: 'none'
+            }));
+          }
+        }
+
+        // 4. 折れ線シリーズ
+        const series = svg.querySelector('.series');
+        c.rows.forEach((r) => {
+          const attrs = {
+            d: buildLine(r.data),
+            fill: 'none',
+            stroke: colors[r.label] || '#000',
+            'stroke-width': widths[r.label] || 1.5
+          };
+          if (r.label === 'loan') attrs['stroke-dasharray'] = '4 4';
+          series.appendChild(mk('path', attrs));
+        });
+
+        // 5. NOW マーカー（縦線 + ラベル + 開始点ドット）
+        const nowG = svg.querySelector('.now');
+        nowG.appendChild(mk('line', {
+          x1: RX0, y1: RY0, x2: RX0, y2: RY1,
+          stroke: '#007aff', 'stroke-width': 1.5, opacity: 0.55
+        }));
+        nowG.appendChild(mk('text', {
+          x: RX0 + 4, y: RY0 + 11, 'font-size': 9, fill: '#007aff', 'font-weight': 600
+        }, 'NOW'));
+        c.rows.forEach((r) => {
+          nowG.appendChild(mk('circle', {
+            cx: RX0, cy: yMap(r.data[0]).toFixed(1), r: 3.5,
+            fill: colors[r.label] || '#000', stroke: '#fff', 'stroke-width': 1
+          }));
+        });
+
+        // 6. スクラブ（描画領域に xRatio 補正）
         const setMonth = (m) => {
           monthEl.textContent = monthLabel(m);
         };
@@ -551,14 +629,16 @@
         const update = (clientX) => {
           const svgRect = svg.getBoundingClientRect();
           const wrapRect = wrap.getBoundingClientRect();
-          const xRatio = Math.max(0, Math.min(1, (clientX - svgRect.left) / svgRect.width));
+          const drawLeftPx = svgRect.left + svgRect.width * (RX0 / VB_W);
+          const drawWidthPx = svgRect.width * (RW / VB_W);
+          const xRatio = Math.max(0, Math.min(1, (clientX - drawLeftPx) / drawWidthPx));
           const m = Math.round(xRatio * 120);
           setMonth(m);
           c.rows.forEach((r) => {
             if (valEls[r.label]) valEls[r.label].textContent = fmtM(r.data[m]);
           });
           cursor.hidden = false;
-          cursor.style.left = `${(svgRect.left - wrapRect.left) + xRatio * svgRect.width}px`;
+          cursor.style.left = `${drawLeftPx - wrapRect.left + xRatio * drawWidthPx}px`;
         };
 
         const resetScrub = () => {

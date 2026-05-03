@@ -304,8 +304,8 @@
 
     <!-- ② Hero -->
     <section class="card hero">
-      <div class="sec-label">利益</div>
-      <div class="figure">¥45,316,030</div>
+      <div class="sec-label">純利益</div>
+      <div class="figure">¥41,216,030</div>
       <div class="delta">+ ¥1.2M<span class="delta-lab">前月比</span></div>
       <div class="rows">
         <div class="row">
@@ -314,7 +314,7 @@
         </div>
         <div class="row">
           <span class="lab">内訳</span>
-          <span class="val">売却 − 購入 − 諸経費</span>
+          <span class="val">売却 − 購入 − 利息 − 諸経費</span>
         </div>
       </div>
     </section>
@@ -344,29 +344,41 @@
       <div class="scen-tile">
         <div class="head"><span class="name">早期</span><span class="mult">×0.95</span></div>
         <div class="kv"><span class="lab">成約</span><span class="val">¥125.5M</span></div>
-        <div class="kv"><span class="lab">着金</span><span class="val">¥41.0M</span></div>
+        <div class="kv"><span class="lab">純利益</span><span class="val">¥34.6M</span></div>
       </div>
       <div class="scen-tile std">
         <div class="head"><span class="name">標準 ★</span><span class="mult">×1.00</span></div>
         <div class="kv"><span class="lab">成約</span><span class="val">¥132.1M</span></div>
-        <div class="kv"><span class="lab">着金</span><span class="val">¥46.5M</span></div>
+        <div class="kv"><span class="lab">純利益</span><span class="val">¥41.2M</span></div>
       </div>
       <div class="scen-tile">
         <div class="head"><span class="name">強気</span><span class="mult">×1.07</span></div>
         <div class="kv"><span class="lab">成約</span><span class="val">¥141.3M</span></div>
-        <div class="kv"><span class="lab">着金</span><span class="val">¥54.2M</span></div>
+        <div class="kv"><span class="lab">純利益</span><span class="val">¥50.5M</span></div>
       </div>
     </div>
 
-    <!-- ⑤ Breakdown -->
+    <!-- ⑤a 純利益の内訳 -->
     <section class="card">
-      <div class="sec-label">利益の内訳</div>
+      <div class="sec-label">純利益の内訳</div>
       <div class="row"><span class="lab">売却価格</span><span class="val pos">+¥132.1M</span></div>
       <div class="row"><span class="lab">購入価格</span><span class="val neg">−¥79.8M</span></div>
+      <div class="row"><span class="lab">累計利息</span><span class="val neg">−¥4.1M</span></div>
       <div class="row"><span class="lab">仲介手数料</span><span class="val neg">−¥4.4M</span></div>
       <div class="row"><span class="lab">諸費用</span><span class="val neg">−¥0.4M</span></div>
       <div class="row"><span class="lab">譲渡税</span><span class="val neg">−¥2.2M</span></div>
-      <div class="row total"><span class="lab">利益</span><span class="val">¥45.3M</span></div>
+      <div class="row total"><span class="lab">純利益</span><span class="val">¥41.2M</span></div>
+    </section>
+
+    <!-- ⑤b 着金額の内訳 -->
+    <section class="card">
+      <div class="sec-label">着金額の内訳</div>
+      <div class="row"><span class="lab">売却価格</span><span class="val pos">+¥132.1M</span></div>
+      <div class="row"><span class="lab">ローン残債</span><span class="val neg">−¥78.6M</span></div>
+      <div class="row"><span class="lab">仲介手数料</span><span class="val neg">−¥4.4M</span></div>
+      <div class="row"><span class="lab">諸費用</span><span class="val neg">−¥0.4M</span></div>
+      <div class="row"><span class="lab">譲渡税</span><span class="val neg">−¥2.2M</span></div>
+      <div class="row total"><span class="lab">着金額</span><span class="val">¥46.5M</span></div>
     </section>
 
     <!-- ⑥a Evidence -->
@@ -436,16 +448,16 @@
       </div>
     </section>
 
-    <!-- ⑦ Chart 2: 着金額推移 -->
+    <!-- ⑦ Chart 2: 純利益推移 -->
     <section class="card chart-card">
       <div class="chart-head">
-        <span class="title">着金額推移</span>
+        <span class="title">純利益推移</span>
         <span class="scrub-month" data-chart-month="2">2026年5月（現在）</span>
       </div>
       <div class="chart-vals">
-        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull">¥46.5M</span></span>
-        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std">¥46.5M</span></span>
-        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear">¥46.5M</span></span>
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull">¥41.2M</span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std">¥41.2M</span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear">¥41.2M</span></span>
       </div>
       <div class="chart-wrap" data-chart="2">
         <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -516,9 +528,9 @@
         {
           key: '2',
           rows: [
-            { label: 'bull', data: gen(46532, 6.0) },
-            { label: 'std',  data: gen(46532, 2.3) },
-            { label: 'bear', data: gen(46532, -1.9) }
+            { label: 'bull', data: gen(41216, 6.0) },
+            { label: 'std',  data: gen(41216, 2.3) },
+            { label: 'bear', data: gen(41216, -1.9) }
           ]
         }
       ];

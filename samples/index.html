@@ -290,11 +290,11 @@
     <section class="card hero">
       <div class="sec-label">含み益</div>
       <div class="figure">¥53,505,861</div>
-      <div class="delta">↑ ¥1.2M<span class="delta-lab">前月比</span></div>
+      <div class="delta">+ ¥1.2M<span class="delta-lab">前月比</span></div>
       <div class="rows">
         <div class="row">
           <span class="lab">購入比</span>
-          <span class="val pos">↑ ¥52.3M</span>
+          <span class="val pos">+ ¥52.3M</span>
         </div>
         <div class="row">
           <span class="lab">信頼度</span>
@@ -462,9 +462,9 @@
           <text x="6" y="11" font-size="9" fill="#007aff" font-weight="600">NOW</text>
           <circle cx="2" cy="150" r="3.5" fill="#007aff" stroke="#fff" stroke-width="1"/>
 
-          <text x="606" y="100" font-size="10" fill="#007aff" font-weight="500">標準</text>
-          <text x="606" y="50" font-size="10" fill="#34c759" font-weight="500">強気</text>
-          <text x="606" y="156" font-size="10" fill="#8e8e93" font-weight="500">弱気</text>
+          <text x="606" y="52" font-size="10" fill="#007aff" font-weight="500">標準</text>
+          <text x="606" y="12" font-size="10" fill="#34c759" font-weight="500">強気</text>
+          <text x="606" y="102" font-size="10" fill="#8e8e93" font-weight="500">弱気</text>
         </svg>
         <div class="chart-cursor" hidden></div>
       </div>
@@ -473,9 +473,9 @@
     <!-- ⑧ Market signals -->
     <section class="card">
       <div class="sec-label">市況シグナル</div>
-      <div class="row"><span class="lab">日経平均</span><span class="val">41,200 <span class="pos">↑0.4%</span></span></div>
-      <div class="row"><span class="lab">JGB 10年利回り</span><span class="val">1.05% <span class="pos">↑0.02pt</span></span></div>
-      <div class="row"><span class="lab">湾岸㎡単価</span><span class="val">¥1.7M <span class="pos">↑1.8%</span></span></div>
+      <div class="row"><span class="lab">日経平均</span><span class="val">41,200 <span class="pos">+0.4%</span></span></div>
+      <div class="row"><span class="lab">JGB 10年利回り</span><span class="val">1.05% <span class="pos">+0.02pt</span></span></div>
+      <div class="row"><span class="lab">湾岸㎡単価</span><span class="val">¥1.7M <span class="pos">+1.8%</span></span></div>
     </section>
 
     <!-- ⑨ Footer -->
@@ -538,15 +538,16 @@
         };
 
         const update = (clientX) => {
-          const rect = svg.getBoundingClientRect();
-          const xRatio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+          const svgRect = svg.getBoundingClientRect();
+          const wrapRect = wrap.getBoundingClientRect();
+          const xRatio = Math.max(0, Math.min(1, (clientX - svgRect.left) / svgRect.width));
           const m = Math.round(xRatio * 120);
           setMonth(m);
           c.rows.forEach((r) => {
             if (valEls[r.label]) valEls[r.label].textContent = fmtM(r.data[m]);
           });
           cursor.hidden = false;
-          cursor.style.left = `${xRatio * 100}%`;
+          cursor.style.left = `${(svgRect.left - wrapRect.left) + xRatio * svgRect.width}px`;
         };
 
         const resetScrub = () => {

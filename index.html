@@ -299,17 +299,17 @@
     <!-- ① Page header -->
     <div class="page-head">
       <div class="title">資産</div>
-      <div class="date">2026.05.03</div>
+      <div class="date" data-bind="meta.pageDate"></div>
     </div>
 
     <!-- ② Hero -->
     <section class="card hero">
       <div class="sec-label">純利益</div>
-      <div class="figure">¥23,000,752</div>
+      <div class="figure" data-bind="hero.netProfit"></div>
       <div class="rows">
         <div class="row">
           <span class="lab">信頼度</span>
-          <span class="val">標準（±5%）</span>
+          <span class="val" data-bind="hero.confidence"></span>
         </div>
         <div class="row">
           <span class="lab">内訳</span>
@@ -322,19 +322,19 @@
     <div class="kpi-grid">
       <div class="kpi">
         <div class="lab">標準成約</div>
-        <div class="val">¥108.9M</div>
+        <div class="val" data-bind="kpi.standardSale"></div>
       </div>
       <div class="kpi">
         <div class="lab">着金額</div>
-        <div class="val">¥25.8M</div>
+        <div class="val" data-bind="kpi.settlement"></div>
       </div>
       <div class="kpi">
         <div class="lab">ローン残債</div>
-        <div class="val">¥78.6M</div>
+        <div class="val" data-bind="kpi.loanBalance"></div>
       </div>
       <div class="kpi">
         <div class="lab">月額返済</div>
-        <div class="val">¥221K</div>
+        <div class="val" data-bind="kpi.monthlyPayment"></div>
       </div>
     </div>
 
@@ -342,73 +342,73 @@
     <div class="scen-grid">
       <div class="scen-tile">
         <div class="head"><span class="name">早期</span><span class="mult">×0.95</span></div>
-        <div class="kv"><span class="lab">成約</span><span class="val">¥103.5M</span></div>
-        <div class="kv"><span class="lab">純利益</span><span class="val">¥17.7M</span></div>
+        <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.early.sale"></span></div>
+        <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.early.profit"></span></div>
       </div>
       <div class="scen-tile std">
         <div class="head"><span class="name">標準 ★</span><span class="mult">×1.00</span></div>
-        <div class="kv"><span class="lab">成約</span><span class="val">¥108.9M</span></div>
-        <div class="kv"><span class="lab">純利益</span><span class="val">¥23.0M</span></div>
+        <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.std.sale"></span></div>
+        <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.std.profit"></span></div>
       </div>
       <div class="scen-tile">
         <div class="head"><span class="name">強気</span><span class="mult">×1.07</span></div>
-        <div class="kv"><span class="lab">成約</span><span class="val">¥116.5M</span></div>
-        <div class="kv"><span class="lab">純利益</span><span class="val">¥29.6M</span></div>
+        <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.strong.sale"></span></div>
+        <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.strong.profit"></span></div>
       </div>
     </div>
 
     <!-- ⑤a 純利益の内訳 -->
     <section class="card">
       <div class="sec-label">純利益の内訳</div>
-      <div class="row"><span class="lab">売却価格</span><span class="val pos">+¥108.9M</span></div>
-      <div class="row"><span class="lab">購入価格</span><span class="val neg">−¥79.8M</span></div>
-      <div class="row"><span class="lab">累計利息</span><span class="val neg">−¥1.6M</span></div>
-      <div class="row"><span class="lab">仲介手数料</span><span class="val neg">−¥3.7M</span></div>
-      <div class="row"><span class="lab">諸費用</span><span class="val neg">−¥0.4M</span></div>
-      <div class="row"><span class="lab">譲渡税</span><span class="val neg">−¥0M</span></div>
-      <div class="row total"><span class="lab">純利益</span><span class="val">¥23.0M</span></div>
+      <div class="row"><span class="lab">売却価格</span><span class="val pos" data-bind="profit.salePrice"></span></div>
+      <div class="row"><span class="lab">購入価格</span><span class="val neg" data-bind="profit.purchase"></span></div>
+      <div class="row"><span class="lab">累計利息</span><span class="val neg" data-bind="profit.cumInterest"></span></div>
+      <div class="row"><span class="lab">仲介手数料</span><span class="val neg" data-bind="profit.brokerage"></span></div>
+      <div class="row"><span class="lab">諸費用</span><span class="val neg" data-bind="profit.other"></span></div>
+      <div class="row"><span class="lab">譲渡税</span><span class="val neg" data-bind="profit.tax"></span></div>
+      <div class="row total"><span class="lab">純利益</span><span class="val" data-bind="profit.total"></span></div>
     </section>
 
     <!-- ⑤b 着金額の内訳 -->
     <section class="card">
       <div class="sec-label">着金額の内訳</div>
-      <div class="row"><span class="lab">売却価格</span><span class="val pos">+¥108.9M</span></div>
-      <div class="row"><span class="lab">ローン残債</span><span class="val neg">−¥78.6M</span></div>
-      <div class="row"><span class="lab">仲介手数料</span><span class="val neg">−¥3.7M</span></div>
-      <div class="row"><span class="lab">諸費用</span><span class="val neg">−¥0.4M</span></div>
-      <div class="row"><span class="lab">譲渡税</span><span class="val neg">−¥0M</span></div>
-      <div class="row total"><span class="lab">着金額</span><span class="val">¥25.8M</span></div>
+      <div class="row"><span class="lab">売却価格</span><span class="val pos" data-bind="cash.salePrice"></span></div>
+      <div class="row"><span class="lab">ローン残債</span><span class="val neg" data-bind="cash.loanBalance"></span></div>
+      <div class="row"><span class="lab">仲介手数料</span><span class="val neg" data-bind="cash.brokerage"></span></div>
+      <div class="row"><span class="lab">諸費用</span><span class="val neg" data-bind="cash.other"></span></div>
+      <div class="row"><span class="lab">譲渡税</span><span class="val neg" data-bind="cash.tax"></span></div>
+      <div class="row total"><span class="lab">着金額</span><span class="val" data-bind="cash.total"></span></div>
     </section>
 
     <!-- ⑥a Evidence -->
     <section class="card">
       <div class="sec-label">評価根拠（PSM比較）</div>
-      <div class="row"><span class="lab">同マンション売出</span><span class="val">¥1.6M /㎡</span></div>
-      <div class="row"><span class="lab">湾岸・江東区平均</span><span class="val">¥1.4M /㎡</span></div>
+      <div class="row"><span class="lab">同マンション売出</span><span class="val" data-bind="psm.row1"></span></div>
+      <div class="row"><span class="lab">湾岸・江東区平均</span><span class="val" data-bind="psm.row2"></span></div>
     </section>
 
     <!-- ⑥b Adjustment flow -->
     <section class="card">
       <div class="sec-label">価格調整フロー</div>
-      <div class="row"><span class="lab">基準㎡単価</span><span class="val">¥1.42M</span></div>
-      <div class="row"><span class="lab">物件補正(21F+角)</span><span class="val">×1.095</span></div>
-      <div class="row"><span class="lab">取引事例価格</span><span class="val">¥118.5M</span></div>
-      <div class="row"><span class="lab">収益還元価格</span><span class="val">¥53.0M</span></div>
-      <div class="row"><span class="lab">ハイブリッド加重</span><span class="val">85% + 15%</span></div>
-      <div class="row total"><span class="lab">標準成約</span><span class="val">¥108.9M</span></div>
+      <div class="row"><span class="lab">基準㎡単価</span><span class="val" data-bind="flow.basePerSqm"></span></div>
+      <div class="row"><span class="lab">物件補正(21F+角)</span><span class="val" data-bind="flow.adjustment"></span></div>
+      <div class="row"><span class="lab">取引事例価格</span><span class="val" data-bind="flow.transactionPrice"></span></div>
+      <div class="row"><span class="lab">収益還元価格</span><span class="val" data-bind="flow.incomeApproachPrice"></span></div>
+      <div class="row"><span class="lab">ハイブリッド加重</span><span class="val" data-bind="flow.hybridWeights"></span></div>
+      <div class="row total"><span class="lab">標準成約</span><span class="val" data-bind="flow.standard"></span></div>
     </section>
 
     <!-- ⑦ Chart 1: 売却価格 × ローン残債 -->
     <section class="card chart-card">
       <div class="chart-head">
         <span class="title">売却価格 × ローン残債</span>
-        <span class="scrub-month" data-chart-month="1">2026年5月（現在）</span>
+        <span class="scrub-month" data-chart-month="1"></span>
       </div>
       <div class="chart-vals">
-        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="1-bull">¥108.9M</span></span>
-        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="1-std">¥108.9M</span></span>
-        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="1-bear">¥108.9M</span></span>
-        <span class="pill"><span class="dot" style="background:#1c1c1e"></span><span class="lab">ローン</span><span class="val" data-scrub="1-loan">¥78.6M</span></span>
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="1-bull"></span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="1-std"></span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="1-bear"></span></span>
+        <span class="pill"><span class="dot" style="background:#1c1c1e"></span><span class="lab">ローン</span><span class="val" data-scrub="1-loan"></span></span>
       </div>
       <div class="chart-wrap" data-chart="1">
         <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -433,12 +433,12 @@
     <section class="card chart-card">
       <div class="chart-head">
         <span class="title">純利益推移</span>
-        <span class="scrub-month" data-chart-month="2">2026年5月（現在）</span>
+        <span class="scrub-month" data-chart-month="2"></span>
       </div>
       <div class="chart-vals">
-        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull">¥23.0M</span></span>
-        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std">¥23.0M</span></span>
-        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear">¥23.0M</span></span>
+        <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull"></span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std"></span></span>
+        <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear"></span></span>
       </div>
       <div class="chart-wrap" data-chart="2">
         <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -462,51 +462,323 @@
     <!-- ⑧ Market signals -->
     <section class="card">
       <div class="sec-label">市況シグナル</div>
-      <div class="row"><span class="lab">日経平均</span><span class="val">41,200 <span class="pos">+0.4%</span></span></div>
-      <div class="row"><span class="lab">JGB 10年利回り</span><span class="val">1.05% <span class="pos">+0.02pt</span></span></div>
-      <div class="row"><span class="lab">湾岸㎡単価</span><span class="val">¥1.7M <span class="pos">+1.8%</span></span></div>
+      <div class="row"><span class="lab">日経平均</span><span class="val"><span data-bind="signal.nikkei"></span> <span class="pos" data-bind="signal.nikkeiDelta"></span></span></div>
+      <div class="row"><span class="lab">JGB 10年利回り</span><span class="val"><span data-bind="signal.jgb"></span> <span class="pos" data-bind="signal.jgbDelta"></span></span></div>
+      <div class="row"><span class="lab">湾岸㎡単価</span><span class="val"><span data-bind="signal.wagan"></span> <span class="pos" data-bind="signal.waganDelta"></span></span></div>
     </section>
 
     <!-- ⑨ Footer -->
     <footer>
-      データ最終更新 2026.05.03 ／ 個人用プロトタイプ
+      データ最終更新 <span data-bind="meta.footerDate"></span> ／ 個人用プロトタイプ
     </footer>
   </main>
 
   <script>
     (function () {
-      const START_Y = 2026, START_M = 5; // NOW = 2026年5月（起点・固定）
-      const fmtM = (nK) => '¥' + (nK / 1000).toFixed(1) + 'M';
+      // ── FACTS（確定情報の単一データソース） ──
+      const FACTS = {
+        unit: {
+          areaSqm: 76.5,
+          floor: 21,
+          isCorner: true,
+          orientation: '東',
+          purchasePrice: 79800000,
+          purchaseExpenses: 4500000,
+          acquiredOn: '2023-07-21',
+          primaryResidenceDeductionEligible: true,
+          primaryResidenceDeductionAmount: 30000000
+        },
+        loan: {
+          principal: 84300000,
+          annualRate: 0.0096,
+          borrowedOn: '2023-07-21',
+          maturesOn: '2058-07-27',
+          currentBalance: 78584139,
+          balanceAsOf: '2026-05-02',
+          monthlyPayment: 221073,
+          paymentDay: 27
+        },
+        valuation: {
+          basePricePerSqm: 1415000,
+          floorAdjustment: 0.063,
+          cornerAdjustment: 0.030,
+          incomeApproachValue: 53000000,
+          hybridWeightSale: 0.85,
+          hybridWeightIncome: 0.15,
+          confidenceLabel: '標準（±5%）',
+          psmEvidence: [
+            { label: '同マンション売出', pricePerSqm: 1620000 },
+            { label: '湾岸・江東区平均', pricePerSqm: 1410000 }
+          ]
+        },
+        scenarios: {
+          speedFactors: { early: 0.95, standard: 1.00, strong: 1.07 },
+          chartAnnualRates: { bull: 0.030, std: 0.010, bear: -0.010 }
+        },
+        expenses: {
+          stamp: 30000,
+          registration: 50000,
+          judicialScrivener: 80000,
+          movingAndOther: 700000
+        },
+        marketSignals: {
+          nikkei: { value: 41200, deltaPct: 0.4 },
+          jgb10y: { value: 1.05, deltaPt: 0.02 },
+          waganPerSqm: { value: 1700000, deltaPct: 1.8 }
+        }
+      };
+
+      const NOW = new Date();
+      const HORIZON_MONTHS = 120;
+      const START_Y = NOW.getFullYear();
+      const START_M = NOW.getMonth() + 1;
+
+      // ── Format helpers ──
+      const fmtYen = (n) => '¥' + Math.round(n).toLocaleString('ja-JP');
+      const fmtM = (n) => '¥' + (n / 1000000).toFixed(1) + 'M';
+      const fmtPctPos = (n) => (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+      const fmtPtPos = (n) => (n >= 0 ? '+' : '') + n.toFixed(2) + 'pt';
       const monthLabel = (m) => {
-        if (m === 0) return '2026年5月（現在）';
+        if (m === 0) return `${START_Y}年${START_M}月（現在）`;
         const total = (START_M - 1) + m;
         const y = START_Y + Math.floor(total / 12);
         const mo = (total % 12) + 1;
         return `${y}年${mo}月`;
       };
-      const gen = (start, annualPct) => {
-        const r = annualPct / 100;
-        return Array.from({ length: 121 }, (_, m) => start * Math.pow(1 + r, m / 12));
-      };
-      const genLoan = (start, end) =>
-        Array.from({ length: 121 }, (_, m) => start + (end - start) * (m / 120));
 
+      // ── Date helpers ──
+      const parseIso = (s) => {
+        const [y, mo, d] = s.split('-').map(Number);
+        return new Date(Date.UTC(y, mo - 1, d));
+      };
+      const addMonths = (date, n) =>
+        new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + n, date.getUTCDate()));
+
+      const countPaymentDates = (start, end, day) => {
+        const startDate = (start instanceof Date) ? start : parseIso(start);
+        const endDate = (end instanceof Date) ? end : parseIso(end);
+        if (endDate <= startDate) return 0;
+        const paymentDateUtc = (y, mi, d) => {
+          const lastDay = new Date(Date.UTC(y, mi + 1, 0)).getUTCDate();
+          return new Date(Date.UTC(y, mi, Math.min(d, lastDay)));
+        };
+        let count = 0;
+        let year = startDate.getUTCFullYear();
+        let month = startDate.getUTCMonth();
+        let candidate = paymentDateUtc(year, month, day);
+        while (candidate <= startDate) {
+          month += 1;
+          if (month > 11) { month = 0; year += 1; }
+          candidate = paymentDateUtc(year, month, day);
+        }
+        while (candidate <= endDate) {
+          count += 1;
+          month += 1;
+          if (month > 11) { month = 0; year += 1; }
+          candidate = paymentDateUtc(year, month, day);
+        }
+        return count;
+      };
+
+      // ── Engine（純粋関数群、lib/valuation.ts JS版） ──
+      const Engine = {
+        loanProjection(asOf) {
+          const elapsedPayments = countPaymentDates(FACTS.loan.balanceAsOf, asOf, FACTS.loan.paymentDay);
+          const monthlyRate = FACTS.loan.annualRate / 12;
+          let balance = FACTS.loan.currentBalance;
+          let monthlyInterest = Math.round(balance * monthlyRate);
+          let monthlyPrincipal = Math.max(0, FACTS.loan.monthlyPayment - monthlyInterest);
+          for (let i = 0; i < elapsedPayments; i++) {
+            monthlyInterest = Math.round(balance * monthlyRate);
+            monthlyPrincipal = Math.max(0, FACTS.loan.monthlyPayment - monthlyInterest);
+            balance = Math.max(0, balance + monthlyInterest - FACTS.loan.monthlyPayment);
+          }
+          return {
+            elapsedPayments,
+            remainingPrincipal: Math.round(balance),
+            monthlyInterest,
+            monthlyPrincipalPayment: monthlyPrincipal
+          };
+        },
+        cumulativeInterestSinceBorrow(asOf) {
+          const totalPayments = countPaymentDates(FACTS.loan.borrowedOn, asOf, FACTS.loan.paymentDay);
+          const principalPaid = FACTS.loan.principal - this.loanProjection(asOf).remainingPrincipal;
+          return Math.max(0, totalPayments * FACTS.loan.monthlyPayment - principalPaid);
+        },
+        unitMultiplier() {
+          return (1 + FACTS.valuation.floorAdjustment) * (1 + FACTS.valuation.cornerAdjustment);
+        },
+        transactionPrice() {
+          return FACTS.unit.areaSqm * FACTS.valuation.basePricePerSqm * this.unitMultiplier();
+        },
+        standardSalePrice() {
+          return this.transactionPrice() * FACTS.valuation.hybridWeightSale
+               + FACTS.valuation.incomeApproachValue * FACTS.valuation.hybridWeightIncome;
+        },
+        brokerageFee(salePrice) {
+          if (salePrice <= 2000000) return Math.round(salePrice * 0.055);
+          if (salePrice <= 4000000) return Math.round(salePrice * 0.044 + 22000);
+          return Math.round(salePrice * 0.033 + 66000);
+        },
+        otherCosts() {
+          return FACTS.expenses.stamp + FACTS.expenses.registration
+               + FACTS.expenses.judicialScrivener + FACTS.expenses.movingAndOther;
+        },
+        holdingPeriod(soldOn) {
+          const acquired = parseIso(FACTS.unit.acquiredOn);
+          const sold = (soldOn instanceof Date) ? soldOn : parseIso(soldOn);
+          const janFirst = new Date(Date.UTC(sold.getUTCFullYear(), 0, 1));
+          const fivePlusAcq = new Date(Date.UTC(
+            acquired.getUTCFullYear() + 5,
+            acquired.getUTCMonth(),
+            acquired.getUTCDate()
+          ));
+          return janFirst > fivePlusAcq ? 'long' : 'short';
+        },
+        capitalGainTax(salePrice, soldOn) {
+          const transferCosts = this.brokerageFee(salePrice) + this.otherCosts();
+          const gain = Math.max(0, salePrice - FACTS.unit.purchasePrice - FACTS.unit.purchaseExpenses - transferCosts);
+          const deduction = FACTS.unit.primaryResidenceDeductionEligible ? FACTS.unit.primaryResidenceDeductionAmount : 0;
+          const taxable = Math.max(0, gain - deduction);
+          const rate = this.holdingPeriod(soldOn) === 'long' ? 0.20315 : 0.3963;
+          return Math.floor(taxable * rate);
+        },
+        saleBreakdown(salePrice, asOf) {
+          const loanBalance = this.loanProjection(asOf).remainingPrincipal;
+          const cumInterest = this.cumulativeInterestSinceBorrow(asOf);
+          const brokerage = this.brokerageFee(salePrice);
+          const otherCosts = this.otherCosts();
+          const tax = this.capitalGainTax(salePrice, asOf);
+          const netProfit = salePrice - FACTS.unit.purchasePrice - cumInterest - brokerage - otherCosts - tax;
+          const settlement = salePrice - loanBalance - brokerage - otherCosts - tax;
+          return { salePrice, loanBalance, cumInterest, brokerage, otherCosts, tax, netProfit, settlement };
+        },
+        priceFlow() {
+          return {
+            basePerSqm: FACTS.valuation.basePricePerSqm,
+            adjustment: this.unitMultiplier(),
+            transactionPrice: this.transactionPrice(),
+            incomeApproachPrice: FACTS.valuation.incomeApproachValue,
+            hybridWeights: `${Math.round(FACTS.valuation.hybridWeightSale * 100)}% + ${Math.round(FACTS.valuation.hybridWeightIncome * 100)}%`,
+            standard: this.standardSalePrice()
+          };
+        },
+        loanTrajectory() {
+          return Array.from({ length: 121 }, (_, m) =>
+            this.loanProjection(addMonths(NOW, m)).remainingPrincipal);
+        },
+        salePriceTrajectory(annualRate) {
+          const base = this.standardSalePrice();
+          const monthly = Math.pow(1 + annualRate, 1 / 12) - 1;
+          return Array.from({ length: 121 }, (_, m) => base * Math.pow(1 + monthly, m));
+        },
+        netProfitTrajectory(annualRate) {
+          const base = this.standardSalePrice();
+          const monthly = Math.pow(1 + annualRate, 1 / 12) - 1;
+          return Array.from({ length: 121 }, (_, m) => {
+            const asOf = addMonths(NOW, m);
+            const salePrice = base * Math.pow(1 + monthly, m);
+            return this.saleBreakdown(salePrice, asOf).netProfit;
+          });
+        }
+      };
+
+      // ── Render to DOM ──
+      const formatPageDate = (d) =>
+        `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+
+      function render() {
+        const stdPrice = Engine.standardSalePrice();
+        const loan = Engine.loanProjection(NOW);
+        const cumInt = Engine.cumulativeInterestSinceBorrow(NOW);
+        const breakdown = Engine.saleBreakdown(stdPrice, NOW);
+        const flow = Engine.priceFlow();
+        const sf = FACTS.scenarios.speedFactors;
+        const earlyBd = Engine.saleBreakdown(stdPrice * sf.early, NOW);
+        const strongBd = Engine.saleBreakdown(stdPrice * sf.strong, NOW);
+
+        const bind = {
+          'meta.pageDate': formatPageDate(NOW),
+          'meta.footerDate': formatPageDate(NOW),
+
+          'hero.netProfit': fmtYen(breakdown.netProfit),
+          'hero.confidence': FACTS.valuation.confidenceLabel,
+
+          'kpi.standardSale': fmtM(stdPrice),
+          'kpi.settlement': fmtM(breakdown.settlement),
+          'kpi.loanBalance': fmtM(loan.remainingPrincipal),
+          'kpi.monthlyPayment': '¥' + Math.round(FACTS.loan.monthlyPayment / 1000) + 'K',
+
+          'scen.early.sale': fmtM(stdPrice * sf.early),
+          'scen.early.profit': fmtM(earlyBd.netProfit),
+          'scen.std.sale': fmtM(stdPrice),
+          'scen.std.profit': fmtM(breakdown.netProfit),
+          'scen.strong.sale': fmtM(stdPrice * sf.strong),
+          'scen.strong.profit': fmtM(strongBd.netProfit),
+
+          'profit.salePrice': '+' + fmtM(stdPrice),
+          'profit.purchase': '−' + fmtM(FACTS.unit.purchasePrice),
+          'profit.cumInterest': '−' + fmtM(cumInt),
+          'profit.brokerage': '−' + fmtM(breakdown.brokerage),
+          'profit.other': '−' + fmtM(breakdown.otherCosts),
+          'profit.tax': '−' + fmtM(breakdown.tax),
+          'profit.total': fmtM(breakdown.netProfit),
+
+          'cash.salePrice': '+' + fmtM(stdPrice),
+          'cash.loanBalance': '−' + fmtM(loan.remainingPrincipal),
+          'cash.brokerage': '−' + fmtM(breakdown.brokerage),
+          'cash.other': '−' + fmtM(breakdown.otherCosts),
+          'cash.tax': '−' + fmtM(breakdown.tax),
+          'cash.total': fmtM(breakdown.settlement),
+
+          'psm.row1': fmtM(FACTS.valuation.psmEvidence[0].pricePerSqm) + ' /㎡',
+          'psm.row2': fmtM(FACTS.valuation.psmEvidence[1].pricePerSqm) + ' /㎡',
+
+          'flow.basePerSqm': fmtM(flow.basePerSqm),
+          'flow.adjustment': '×' + flow.adjustment.toFixed(3),
+          'flow.transactionPrice': fmtM(flow.transactionPrice),
+          'flow.incomeApproachPrice': fmtM(flow.incomeApproachPrice),
+          'flow.hybridWeights': flow.hybridWeights,
+          'flow.standard': fmtM(flow.standard),
+
+          'signal.nikkei': FACTS.marketSignals.nikkei.value.toLocaleString('ja-JP'),
+          'signal.nikkeiDelta': fmtPctPos(FACTS.marketSignals.nikkei.deltaPct),
+          'signal.jgb': FACTS.marketSignals.jgb10y.value.toFixed(2) + '%',
+          'signal.jgbDelta': fmtPtPos(FACTS.marketSignals.jgb10y.deltaPt),
+          'signal.wagan': fmtM(FACTS.marketSignals.waganPerSqm.value),
+          'signal.waganDelta': fmtPctPos(FACTS.marketSignals.waganPerSqm.deltaPct)
+        };
+
+        document.querySelectorAll('[data-bind]').forEach((el) => {
+          const key = el.getAttribute('data-bind');
+          if (bind[key] != null) el.textContent = bind[key];
+        });
+
+        // 各チャートヘッダの月数表示も初期化
+        document.querySelectorAll('[data-chart-month]').forEach((el) => {
+          el.textContent = monthLabel(0);
+        });
+      }
+
+      render();
+
+      // ── Charts data（Engine 派生） ──
       const charts = [
         {
           key: '1',
           rows: [
-            { label: 'bull', data: gen(108900, 3) },
-            { label: 'std',  data: gen(108900, 1) },
-            { label: 'bear', data: gen(108900, -1) },
-            { label: 'loan', data: genLoan(78584, 50000) }
+            { label: 'bull', data: Engine.salePriceTrajectory(FACTS.scenarios.chartAnnualRates.bull) },
+            { label: 'std',  data: Engine.salePriceTrajectory(FACTS.scenarios.chartAnnualRates.std) },
+            { label: 'bear', data: Engine.salePriceTrajectory(FACTS.scenarios.chartAnnualRates.bear) },
+            { label: 'loan', data: Engine.loanTrajectory() }
           ]
         },
         {
           key: '2',
           rows: [
-            { label: 'bull', data: gen(23000, 6.0) },
-            { label: 'std',  data: gen(23000, 2.3) },
-            { label: 'bear', data: gen(23000, -1.9) }
+            { label: 'bull', data: Engine.netProfitTrajectory(FACTS.scenarios.chartAnnualRates.bull) },
+            { label: 'std',  data: Engine.netProfitTrajectory(FACTS.scenarios.chartAnnualRates.std) },
+            { label: 'bear', data: Engine.netProfitTrajectory(FACTS.scenarios.chartAnnualRates.bear) }
           ]
         }
       ];

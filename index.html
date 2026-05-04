@@ -217,6 +217,35 @@
       .scen-grid { grid-template-columns: 1fr; }
     }
 
+    /* ⑤ Breakdown scenario toggle */
+    .bd-toggle {
+      display: flex;
+      gap: 6px;
+      margin: 0;
+    }
+    .bd-tab {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--card);
+      border: 0.5px solid var(--hairline);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-feature-settings: "tnum" 1;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .bd-tab:hover {
+      background: var(--blue-soft);
+    }
+    .bd-tab.is-active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
     /* ⑦ Charts */
     .chart-card { padding: 14px 14px 12px; }
     .chart-head {
@@ -353,8 +382,15 @@
       <div class="scen-tile">
         <div class="head"><span class="name">強気</span><span class="mult">×1.07</span></div>
         <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.strong.sale"></span></div>
-        <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.strong.profit"></span></div>
+      <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.strong.profit"></span></div>
       </div>
+    </div>
+
+    <!-- ⑤ Breakdown scenario toggle -->
+    <div class="bd-toggle" role="tablist" aria-label="シナリオ切替">
+      <button type="button" class="bd-tab" data-scenario="0.95" role="tab">早期 ×0.95</button>
+      <button type="button" class="bd-tab is-active" data-scenario="1.00" role="tab" aria-selected="true">標準 ×1.00</button>
+      <button type="button" class="bd-tab" data-scenario="1.07" role="tab">強気 ×1.07</button>
     </div>
 
     <!-- ⑤a 純利益の内訳 -->
@@ -760,7 +796,50 @@
         });
       }
 
+      function renderBreakdown(factor) {
+        const stdPrice = Engine.standardSalePrice();
+        const sale = stdPrice * factor;
+        const breakdown = Engine.saleBreakdown(sale, NOW);
+        const cumInt = Engine.cumulativeInterestSinceBorrow(NOW);
+        const loan = Engine.loanProjection(NOW);
+
+        const updates = {
+          'profit.salePrice': '+' + fmtM(sale),
+          'profit.purchase': '−' + fmtM(FACTS.unit.purchasePrice),
+          'profit.cumInterest': '−' + fmtM(cumInt),
+          'profit.brokerage': '−' + fmtM(breakdown.brokerage),
+          'profit.other': '−' + fmtM(breakdown.otherCosts),
+          'profit.tax': '−' + fmtM(breakdown.tax),
+          'profit.total': fmtM(breakdown.netProfit),
+          'cash.salePrice': '+' + fmtM(sale),
+          'cash.loanBalance': '−' + fmtM(loan.remainingPrincipal),
+          'cash.brokerage': '−' + fmtM(breakdown.brokerage),
+          'cash.other': '−' + fmtM(breakdown.otherCosts),
+          'cash.tax': '−' + fmtM(breakdown.tax),
+          'cash.total': fmtM(breakdown.settlement)
+        };
+
+        Object.entries(updates).forEach(([key, val]) => {
+          const el = document.querySelector(`[data-bind="${key}"]`);
+          if (el) el.textContent = val;
+        });
+      }
+
       render();
+
+      // ── Breakdown toggle wiring ──
+      renderBreakdown(1.00);
+      document.querySelectorAll('.bd-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.bd-tab').forEach((b) => {
+            b.classList.remove('is-active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-selected', 'true');
+          renderBreakdown(parseFloat(btn.dataset.scenario));
+        });
+      });
 
       // ── Charts data（Engine 派生） ──
       const charts = [

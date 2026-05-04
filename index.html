@@ -304,8 +304,8 @@
 
     <!-- ② Hero -->
     <section class="card hero">
-      <div class="sec-label">純利益</div>
-      <div class="figure" data-bind="hero.netProfit"></div>
+      <div class="sec-label">着金額</div>
+      <div class="figure" data-bind="hero.settlement"></div>
       <div class="rows">
         <div class="row">
           <span class="lab">信頼度</span>
@@ -313,7 +313,7 @@
         </div>
         <div class="row">
           <span class="lab">内訳</span>
-          <span class="val">売却 − 購入 − 利息 − 諸経費</span>
+          <span class="val">売却 − ローン残債 − 諸経費</span>
         </div>
       </div>
     </section>
@@ -325,8 +325,8 @@
         <div class="val" data-bind="kpi.standardSale"></div>
       </div>
       <div class="kpi">
-        <div class="lab">着金額</div>
-        <div class="val" data-bind="kpi.settlement"></div>
+        <div class="lab">純利益</div>
+        <div class="val" data-bind="kpi.netProfit"></div>
       </div>
       <div class="kpi">
         <div class="lab">ローン残債</div>
@@ -701,11 +701,11 @@
           'meta.pageDate': formatPageDate(NOW),
           'meta.footerDate': formatPageDate(NOW),
 
-          'hero.netProfit': fmtYen(breakdown.netProfit),
+          'hero.settlement': fmtYen(breakdown.settlement),
           'hero.confidence': FACTS.valuation.confidenceLabel,
 
           'kpi.standardSale': fmtM(stdPrice),
-          'kpi.settlement': fmtM(breakdown.settlement),
+          'kpi.netProfit': fmtM(breakdown.netProfit),
           'kpi.loanBalance': fmtM(loan.remainingPrincipal),
           'kpi.monthlyPayment': '¥' + Math.round(FACTS.loan.monthlyPayment / 1000) + 'K',
 

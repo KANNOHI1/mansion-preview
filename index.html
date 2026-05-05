@@ -217,35 +217,6 @@
       .scen-grid { grid-template-columns: 1fr; }
     }
 
-    /* ⑤ Breakdown scenario toggle */
-    .bd-toggle {
-      display: flex;
-      gap: 6px;
-      margin: 0;
-    }
-    .bd-tab {
-      flex: 1;
-      padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      font-family: inherit;
-      color: var(--ink);
-      background: var(--card);
-      border: 0.5px solid var(--hairline);
-      border-radius: var(--radius);
-      cursor: pointer;
-      font-feature-settings: "tnum" 1;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
-    .bd-tab:hover {
-      background: var(--blue-soft);
-    }
-    .bd-tab.is-active {
-      background: var(--blue);
-      color: #fff;
-      border-color: var(--blue);
-    }
-
     /* ⑥c Loan recalc table */
     .recalc-divider {
       height: 0.5px;
@@ -280,6 +251,40 @@
       text-align: right;
       color: var(--label-2);
       font-size: 11px;
+    }
+    /* ⑥d シナリオ統合ビュー */
+    .scenario-table {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      column-gap: 12px;
+      row-gap: 6px;
+      font-size: 13px;
+      font-feature-settings: "tnum" 1;
+    }
+    .scenario-table .st-head {
+      font-size: 11px;
+      color: var(--label-2);
+      padding-bottom: 4px;
+      border-bottom: 0.5px solid var(--hairline-soft);
+    }
+    .scenario-table .st-cell {
+      padding: 2px 0;
+    }
+    .scenario-table .st-name { color: var(--ink); font-weight: 500; }
+    .scenario-table .st-prob { text-align: right; color: var(--label-2); }
+    .scenario-table .st-price {
+      text-align: right;
+      color: var(--ink);
+      font-feature-settings: "tnum" 1;
+    }
+    .scenario-table .scenario-row.bear .st-name { color: var(--label-2); }
+    .scenario-table .scenario-row.bull .st-name { color: var(--blue); }
+    .scenario-table .scenario-row.stress .st-name { color: #c00; font-weight: 600; }
+    .scenario-table .scenario-row.stress .st-price { color: #c00; }
+    .scenario-note {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--label-2);
     }
 
     /* ⑦ Charts */
@@ -386,7 +391,7 @@
     <!-- ③ KPI 2×2 -->
     <div class="kpi-grid">
       <div class="kpi">
-        <div class="lab">標準成約</div>
+        <div class="lab">想定成約</div>
         <div class="val" data-bind="kpi.standardSale"></div>
       </div>
       <div class="kpi">
@@ -401,32 +406,6 @@
         <div class="lab">月額返済</div>
         <div class="val" data-bind="kpi.monthlyPayment"></div>
       </div>
-    </div>
-
-    <!-- ④ Scenarios -->
-    <div class="scen-grid">
-      <div class="scen-tile">
-        <div class="head"><span class="name">早期</span><span class="mult">×0.95</span></div>
-        <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.early.sale"></span></div>
-        <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.early.profit"></span></div>
-      </div>
-      <div class="scen-tile std">
-        <div class="head"><span class="name">標準 ★</span><span class="mult">×1.00</span></div>
-        <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.std.sale"></span></div>
-        <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.std.profit"></span></div>
-      </div>
-      <div class="scen-tile">
-        <div class="head"><span class="name">強気</span><span class="mult">×1.07</span></div>
-        <div class="kv"><span class="lab">成約</span><span class="val" data-bind="scen.strong.sale"></span></div>
-      <div class="kv"><span class="lab">純利益</span><span class="val" data-bind="scen.strong.profit"></span></div>
-      </div>
-    </div>
-
-    <!-- ⑤ Breakdown scenario toggle -->
-    <div class="bd-toggle" role="tablist" aria-label="シナリオ切替">
-      <button type="button" class="bd-tab" data-scenario="0.95" role="tab">早期 ×0.95</button>
-      <button type="button" class="bd-tab is-active" data-scenario="1.00" role="tab" aria-selected="true">標準 ×1.00</button>
-      <button type="button" class="bd-tab" data-scenario="1.07" role="tab">強気 ×1.07</button>
     </div>
 
     <!-- ⑤a 純利益の内訳 -->
@@ -463,11 +442,11 @@
     <section class="card">
       <div class="sec-label">価格調整フロー</div>
       <div class="row"><span class="lab">基準㎡単価</span><span class="val" data-bind="flow.basePerSqm"></span></div>
-      <div class="row"><span class="lab">物件補正(21F+角)</span><span class="val" data-bind="flow.adjustment"></span></div>
+      <div class="row"><span class="lab" data-bind="flow.adjustmentLabel">物件補正</span><span class="val" data-bind="flow.adjustment"></span></div>
       <div class="row"><span class="lab">取引事例価格</span><span class="val" data-bind="flow.transactionPrice"></span></div>
       <div class="row"><span class="lab">収益還元価格</span><span class="val" data-bind="flow.incomeApproachPrice"></span></div>
       <div class="row"><span class="lab">ハイブリッド加重</span><span class="val" data-bind="flow.hybridWeights"></span></div>
-      <div class="row total"><span class="lab">標準成約</span><span class="val" data-bind="flow.standard"></span></div>
+      <div class="row total"><span class="lab">想定成約</span><span class="val" data-bind="flow.standard"></span></div>
     </section>
 
     <!-- ⑥c 5年ルール解除後の月額シミュレーション -->
@@ -480,6 +459,16 @@
       <div class="recalc-table" id="recalc-table"></div>
     </section>
 
+    <!-- ⑥d シナリオ統合ビュー（マクロ環境別予測） -->
+    <section class="card">
+      <div class="sec-label">シナリオ統合ビュー（マクロ環境別予測）</div>
+      <div class="scenario-table" id="scenario-table"></div>
+      <div class="recalc-divider"></div>
+      <div class="row total"><span class="lab">期待値（5年後）</span><span class="val" data-bind="exp.5y"></span></div>
+      <div class="row total"><span class="lab">期待値（10年後）</span><span class="val" data-bind="exp.10y"></span></div>
+      <div class="scenario-note" data-bind="exp.weightsNote">※ 確率重み</div>
+    </section>
+
     <!-- ⑦ Chart 1: 売却価格 × ローン残債 -->
     <section class="card chart-card">
       <div class="chart-head">
@@ -488,7 +477,7 @@
       </div>
       <div class="chart-vals">
         <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="1-bull"></span></span>
-        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="1-std"></span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">ベース</span><span class="val" data-scrub="1-std"></span></span>
         <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="1-bear"></span></span>
         <span class="pill"><span class="dot" style="background:#1c1c1e"></span><span class="lab">ローン</span><span class="val" data-scrub="1-loan"></span></span>
       </div>
@@ -519,7 +508,7 @@
       </div>
       <div class="chart-vals">
         <span class="pill"><span class="dot" style="background:#34c759"></span><span class="lab">強気</span><span class="val" data-scrub="2-bull"></span></span>
-        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">標準</span><span class="val" data-scrub="2-std"></span></span>
+        <span class="pill"><span class="dot" style="background:#007aff"></span><span class="lab">ベース</span><span class="val" data-scrub="2-std"></span></span>
         <span class="pill"><span class="dot" style="background:#8e8e93"></span><span class="lab">弱気</span><span class="val" data-scrub="2-bear"></span></span>
       </div>
       <div class="chart-wrap" data-chart="2">
@@ -596,15 +585,32 @@
           incomeApproachValue: 53000000,
           hybridWeightSale: 0.85,
           hybridWeightIncome: 0.15,
-          confidenceLabel: '標準（±5%）',
+          confidenceLabel: '±5%',
           psmEvidence: [
             { label: '同マンション売出', pricePerSqm: 1620000 },
             { label: '湾岸・江東区平均', pricePerSqm: 1410000 }
           ]
         },
         scenarios: {
-          speedFactors: { early: 0.95, standard: 1.00, strong: 1.07 },
-          chartAnnualRates: { bull: 0.030, std: 0.010, bear: -0.010 }
+          weights: { bear: 0.25, base: 0.50, bull: 0.20, stress: 0.05 },
+          variables: {
+            bear:   { policyRate: 0.020, unitRate: -0.020, rent: -0.005, capRate: 0.050, fx: 130, liquidity: -0.03 },
+            base:   { policyRate: 0.015, unitRate:  0.000, rent:  0.010, capRate: 0.046, fx: 150, liquidity:  0.00 },
+            bull:   { policyRate: 0.010, unitRate:  0.020, rent:  0.020, capRate: 0.042, fx: 160, liquidity:  0.00 },
+            stress: { policyRate: 0.030, unitRate: -0.050, rent: -0.020, capRate: 0.055, fx: 100, liquidity: -0.10 }
+          },
+          labels: { bear: '弱気', base: 'ベース', bull: '強気', stress: 'ストレス' }
+        },
+        calendar: {
+          builtYear: 2012,
+          ageDecayBefore23: -0.010,
+          ageDecayAfter23: -0.015,
+          events: [
+            { name: 'BRT東京延伸',     monthsAhead: 6,  effect:  0.01 },
+            { name: '修繕積立金第1段', monthsAhead: 18, effect: -0.01 },
+            { name: '修繕積立金第2段', monthsAhead: 78, effect: -0.02 },
+            { name: '豊住線開通',       monthsAhead: 96, effect:  0.05 }
+          ]
         },
         expenses: {
           stamp: 30000,
@@ -731,7 +737,7 @@
           const gain = Math.max(0, salePrice - FACTS.unit.purchasePrice - FACTS.unit.purchaseExpenses - transferCosts);
           const deduction = FACTS.unit.primaryResidenceDeductionEligible ? FACTS.unit.primaryResidenceDeductionAmount : 0;
           const taxable = Math.max(0, gain - deduction);
-          const rate = this.holdingPeriod(soldOn) === 'long' ? 0.20315 : 0.3963;
+          const rate = this.holdingPeriod(soldOn) === 'long' ? (0.2 + 0.003 + 0.00015) : 0.3963;
           return Math.floor(taxable * rate);
         },
         saleBreakdown(salePrice, asOf) {
@@ -813,6 +819,45 @@
             monthlyInterest,
             unpaidInterest: monthlyInterest > actual
           };
+        },
+        scenarioPriceAtMonth(scenarioKey, m) {
+          const v = FACTS.scenarios.variables[scenarioKey];
+          const cal = FACTS.calendar;
+          const base = this.standardSalePrice();
+          const monthlyMacro = Math.pow(1 + v.unitRate, 1 / 12) - 1;
+          let price = base * Math.pow(1 + monthlyMacro, m);
+          const ageNow = (NOW.getFullYear() - cal.builtYear) + NOW.getMonth() / 12;
+          for (let i = 0; i < m; i++) {
+            const ageAtMonth = ageNow + (i + 1) / 12;
+            const yearlyDecay = ageAtMonth >= 23 ? cal.ageDecayAfter23 : cal.ageDecayBefore23;
+            price *= Math.pow(1 + yearlyDecay, 1 / 12);
+          }
+          FACTS.calendar.events.forEach((ev) => {
+            if (m >= ev.monthsAhead) price *= (1 + ev.effect);
+          });
+          price *= (1 + v.liquidity);
+          return price;
+        },
+        scenarioPrice(scenarioKey, yearsAhead) {
+          return this.scenarioPriceAtMonth(scenarioKey, Math.round(yearsAhead * 12));
+        },
+        expectedPrice(yearsAhead) {
+          const w = FACTS.scenarios.weights;
+          let sum = 0;
+          Object.keys(w).forEach((key) => {
+            sum += w[key] * this.scenarioPrice(key, yearsAhead);
+          });
+          return sum;
+        },
+        scenarioTrajectory(scenarioKey) {
+          return Array.from({ length: 121 }, (_, m) => this.scenarioPriceAtMonth(scenarioKey, m));
+        },
+        scenarioSettlementTrajectory(scenarioKey) {
+          return Array.from({ length: 121 }, (_, m) => {
+            const asOf = addMonths(NOW, m);
+            const salePrice = this.scenarioPriceAtMonth(scenarioKey, m);
+            return this.saleBreakdown(salePrice, asOf).settlement;
+          });
         }
       };
 
@@ -826,9 +871,6 @@
         const cumInt = Engine.cumulativeInterestSinceBorrow(NOW);
         const breakdown = Engine.saleBreakdown(stdPrice, NOW);
         const flow = Engine.priceFlow();
-        const sf = FACTS.scenarios.speedFactors;
-        const earlyBd = Engine.saleBreakdown(stdPrice * sf.early, NOW);
-        const strongBd = Engine.saleBreakdown(stdPrice * sf.strong, NOW);
 
         const bind = {
           'meta.pageDate': formatPageDate(NOW),
@@ -841,13 +883,6 @@
           'kpi.netProfit': fmtM(breakdown.netProfit),
           'kpi.loanBalance': fmtM(loan.remainingPrincipal),
           'kpi.monthlyPayment': '¥' + Math.round(FACTS.loan.monthlyPayment / 1000) + 'K',
-
-          'scen.early.sale': fmtM(stdPrice * sf.early),
-          'scen.early.profit': fmtM(earlyBd.netProfit),
-          'scen.std.sale': fmtM(stdPrice),
-          'scen.std.profit': fmtM(breakdown.netProfit),
-          'scen.strong.sale': fmtM(stdPrice * sf.strong),
-          'scen.strong.profit': fmtM(strongBd.netProfit),
 
           'profit.salePrice': '+' + fmtM(stdPrice),
           'profit.purchase': '−' + fmtM(FACTS.unit.purchasePrice),
@@ -868,6 +903,7 @@
           'psm.row2': fmtM(FACTS.valuation.psmEvidence[1].pricePerSqm) + ' /㎡',
 
           'flow.basePerSqm': fmtM(flow.basePerSqm),
+          'flow.adjustmentLabel': '物件補正(' + FACTS.unit.floor + 'F' + (FACTS.unit.isCorner ? '+角' : '') + ')',
           'flow.adjustment': '×' + flow.adjustment.toFixed(3),
           'flow.transactionPrice': fmtM(flow.transactionPrice),
           'flow.incomeApproachPrice': fmtM(flow.incomeApproachPrice),
@@ -928,6 +964,47 @@
         });
       }
 
+      function renderScenarioMatrix() {
+        const tbl = document.getElementById('scenario-table');
+        if (!tbl) return;
+        const labels = FACTS.scenarios.labels;
+        const weights = FACTS.scenarios.weights;
+        const order = ['bear', 'base', 'bull', 'stress'];
+        const y5 = NOW.getFullYear() + 5;
+        const y10 = NOW.getFullYear() + 10;
+
+        tbl.innerHTML =
+          '<div class="st-head st-cell">シナリオ</div>' +
+          '<div class="st-head st-cell st-prob">確率</div>' +
+          '<div class="st-head st-cell st-price">5年後 (' + y5 + ')</div>' +
+          '<div class="st-head st-cell st-price">10年後 (' + y10 + ')</div>';
+
+        order.forEach((key) => {
+          const p5 = Engine.scenarioPrice(key, 5);
+          const p10 = Engine.scenarioPrice(key, 10);
+          tbl.insertAdjacentHTML('beforeend',
+            '<div class="st-cell st-name scenario-row ' + key + '">' + labels[key] + '</div>' +
+            '<div class="st-cell st-prob scenario-row ' + key + '">' + Math.round(weights[key] * 100) + '%</div>' +
+            '<div class="st-cell st-price scenario-row ' + key + '">' + fmtM(p5) + '</div>' +
+            '<div class="st-cell st-price scenario-row ' + key + '">' + fmtM(p10) + '</div>'
+          );
+        });
+
+        const exp5 = Engine.expectedPrice(5);
+        const exp10 = Engine.expectedPrice(10);
+        const e5 = document.querySelector('[data-bind="exp.5y"]');
+        const e10 = document.querySelector('[data-bind="exp.10y"]');
+        if (e5) e5.textContent = fmtM(exp5);
+        if (e10) e10.textContent = fmtM(exp10);
+        const noteEl = document.querySelector('[data-bind="exp.weightsNote"]');
+        if (noteEl) {
+          const parts = ['bear', 'base', 'bull', 'stress'].map((k) =>
+            labels[k] + Math.round(weights[k] * 100) + '%'
+          );
+          noteEl.textContent = '※ 確率重み: ' + parts.join(' / ');
+        }
+      }
+
       function renderBreakdown(factor) {
         const stdPrice = Engine.standardSalePrice();
         const sale = stdPrice * factor;
@@ -959,38 +1036,30 @@
 
       render();
       renderRecalc();
+      renderScenarioMatrix();
 
-      // ── Breakdown toggle wiring ──
+      // ── Breakdown（base シナリオ固定で表示） ──
       renderBreakdown(1.00);
-      document.querySelectorAll('.bd-tab').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.bd-tab').forEach((b) => {
-            b.classList.remove('is-active');
-            b.setAttribute('aria-selected', 'false');
-          });
-          btn.classList.add('is-active');
-          btn.setAttribute('aria-selected', 'true');
-          renderBreakdown(parseFloat(btn.dataset.scenario));
-        });
-      });
 
-      // ── Charts data（Engine 派生） ──
+      // ── Charts data（Engine 派生、新シナリオ） ──
       const charts = [
         {
           key: '1',
           rows: [
-            { label: 'bull', data: Engine.salePriceTrajectory(FACTS.scenarios.chartAnnualRates.bull) },
-            { label: 'std',  data: Engine.salePriceTrajectory(FACTS.scenarios.chartAnnualRates.std) },
-            { label: 'bear', data: Engine.salePriceTrajectory(FACTS.scenarios.chartAnnualRates.bear) },
-            { label: 'loan', data: Engine.loanTrajectory() }
+            { label: 'bull',   data: Engine.scenarioTrajectory('bull') },
+            { label: 'std',    data: Engine.scenarioTrajectory('base') },
+            { label: 'bear',   data: Engine.scenarioTrajectory('bear') },
+            { label: 'stress', data: Engine.scenarioTrajectory('stress') },
+            { label: 'loan',   data: Engine.loanTrajectory() }
           ]
         },
         {
           key: '2',
           rows: [
-            { label: 'bull', data: Engine.settlementTrajectory(FACTS.scenarios.chartAnnualRates.bull) },
-            { label: 'std',  data: Engine.settlementTrajectory(FACTS.scenarios.chartAnnualRates.std) },
-            { label: 'bear', data: Engine.settlementTrajectory(FACTS.scenarios.chartAnnualRates.bear) }
+            { label: 'bull',   data: Engine.scenarioSettlementTrajectory('bull') },
+            { label: 'std',    data: Engine.scenarioSettlementTrajectory('base') },
+            { label: 'bear',   data: Engine.scenarioSettlementTrajectory('bear') },
+            { label: 'stress', data: Engine.scenarioSettlementTrajectory('stress') }
           ]
         }
       ];
@@ -1037,7 +1106,7 @@
         const colors = { bull: '#34c759', std: '#007aff', bear: '#8e8e93', loan: '#1c1c1e' };
         const widths = { bull: 1.4, std: 2.5, bear: 1.2, loan: 1.4 };
 
-        // 1. 横軸ラベル（2026, 2028, ..., 2036）
+        // 1. 横軸ラベル（2年刻み）
         const xAxis = svg.querySelector('.x-axis');
         for (let i = 0; i <= 5; i++) {
           const m = i * 24;

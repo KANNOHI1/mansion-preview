@@ -468,7 +468,7 @@
     <!-- ⑦ Chart 2: 純利益推移 -->
     <section class="card chart-card">
       <div class="chart-head">
-        <span class="title">純利益推移</span>
+        <span class="title">着金額推移</span>
         <span class="scrub-month" data-chart-month="2"></span>
       </div>
       <div class="chart-vals">
@@ -716,6 +716,15 @@
             const salePrice = base * Math.pow(1 + monthly, m);
             return this.saleBreakdown(salePrice, asOf).netProfit;
           });
+        },
+        settlementTrajectory(annualRate) {
+          const base = this.standardSalePrice();
+          const monthly = Math.pow(1 + annualRate, 1 / 12) - 1;
+          return Array.from({ length: 121 }, (_, m) => {
+            const asOf = addMonths(NOW, m);
+            const salePrice = base * Math.pow(1 + monthly, m);
+            return this.saleBreakdown(salePrice, asOf).settlement;
+          });
         }
       };
 
@@ -855,9 +864,9 @@
         {
           key: '2',
           rows: [
-            { label: 'bull', data: Engine.netProfitTrajectory(FACTS.scenarios.chartAnnualRates.bull) },
-            { label: 'std',  data: Engine.netProfitTrajectory(FACTS.scenarios.chartAnnualRates.std) },
-            { label: 'bear', data: Engine.netProfitTrajectory(FACTS.scenarios.chartAnnualRates.bear) }
+            { label: 'bull', data: Engine.settlementTrajectory(FACTS.scenarios.chartAnnualRates.bull) },
+            { label: 'std',  data: Engine.settlementTrajectory(FACTS.scenarios.chartAnnualRates.std) },
+            { label: 'bear', data: Engine.settlementTrajectory(FACTS.scenarios.chartAnnualRates.bear) }
           ]
         }
       ];

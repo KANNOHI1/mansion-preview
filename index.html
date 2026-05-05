@@ -246,6 +246,42 @@
       border-color: var(--blue);
     }
 
+    /* ⑥c Loan recalc table */
+    .recalc-divider {
+      height: 0.5px;
+      background: var(--hairline);
+      margin: 8px 0;
+    }
+    .recalc-table {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      column-gap: 12px;
+      row-gap: 6px;
+      font-size: 13px;
+      font-feature-settings: "tnum" 1;
+    }
+    .recalc-table .rt-head {
+      font-size: 11px;
+      color: var(--label-2);
+      padding-bottom: 4px;
+      border-bottom: 0.5px solid var(--hairline-soft);
+    }
+    .recalc-table .rt-cell {
+      padding: 2px 0;
+    }
+    .recalc-table .rt-rate { color: var(--ink); }
+    .recalc-table .rt-pmt {
+      text-align: right;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .recalc-table .rt-pmt.capped { color: var(--blue); font-weight: 600; }
+    .recalc-table .rt-delta {
+      text-align: right;
+      color: var(--label-2);
+      font-size: 11px;
+    }
+
     /* ⑦ Charts */
     .chart-card { padding: 14px 14px 12px; }
     .chart-head {
@@ -434,6 +470,16 @@
       <div class="row total"><span class="lab">標準成約</span><span class="val" data-bind="flow.standard"></span></div>
     </section>
 
+    <!-- ⑥c 5年ルール解除後の月額シミュレーション -->
+    <section class="card">
+      <div class="sec-label">2028-07以降の月額（5年ルール解除後）</div>
+      <div class="row"><span class="lab">再計算時の残債</span><span class="val" data-bind="recalc.balance"></span></div>
+      <div class="row"><span class="lab">残期間</span><span class="val" data-bind="recalc.remaining"></span></div>
+      <div class="row"><span class="lab">1.25倍上限</span><span class="val" data-bind="recalc.cap"></span></div>
+      <div class="recalc-divider"></div>
+      <div class="recalc-table" id="recalc-table"></div>
+    </section>
+
     <!-- ⑦ Chart 1: 売却価格 × ローン残債 -->
     <section class="card chart-card">
       <div class="chart-head">
@@ -532,7 +578,16 @@
           currentBalance: 78584139,
           balanceAsOf: '2026-05-02',
           monthlyPayment: 221073,
-          paymentDay: 27
+          paymentDay: 27,
+          fiveYearRuleEndOn: '2028-07-21',
+          capMultiplier: 1.25,
+          recalcScenarios: [
+            { label: '据置 0.96%', rate: 0.0096 },
+            { label: '軽度 1.5%',  rate: 0.0150 },
+            { label: '中等 2.0%',  rate: 0.0200 },
+            { label: '急上 3.0%',  rate: 0.0300 },
+            { label: 'ストレス 4.0%', rate: 0.0400 }
+          ]
         },
         valuation: {
           basePricePerSqm: 1415000,
@@ -725,6 +780,39 @@
             const salePrice = base * Math.pow(1 + monthly, m);
             return this.saleBreakdown(salePrice, asOf).settlement;
           });
+        },
+        calcPMT(principal, annualRate, months) {
+          const r = annualRate / 12;
+          if (r === 0) return principal / months;
+          return principal * r / (1 - Math.pow(1 + r, -months));
+        },
+        balanceAtFiveYearRuleEnd() {
+          return this.loanProjection(parseIso(FACTS.loan.fiveYearRuleEndOn)).remainingPrincipal;
+        },
+        remainingMonthsAfterRecalc() {
+          return countPaymentDates(
+            FACTS.loan.fiveYearRuleEndOn,
+            FACTS.loan.maturesOn,
+            FACTS.loan.paymentDay
+          );
+        },
+        paymentCap() {
+          return Math.floor(FACTS.loan.monthlyPayment * FACTS.loan.capMultiplier);
+        },
+        recalculatedPayment(newAnnualRate) {
+          const balance = this.balanceAtFiveYearRuleEnd();
+          const months = this.remainingMonthsAfterRecalc();
+          const cap = this.paymentCap();
+          const theoretical = Math.round(this.calcPMT(balance, newAnnualRate, months));
+          const actual = Math.min(theoretical, cap);
+          const monthlyInterest = Math.round(balance * newAnnualRate / 12);
+          return {
+            theoretical,
+            actual,
+            capped: theoretical > cap,
+            monthlyInterest,
+            unpaidInterest: monthlyInterest > actual
+          };
         }
       };
 
@@ -805,6 +893,41 @@
         });
       }
 
+      function renderRecalc() {
+        const balance = Engine.balanceAtFiveYearRuleEnd();
+        const months = Engine.remainingMonthsAfterRecalc();
+        const cap = Engine.paymentCap();
+        const current = FACTS.loan.monthlyPayment;
+
+        const balEl = document.querySelector('[data-bind="recalc.balance"]');
+        const remEl = document.querySelector('[data-bind="recalc.remaining"]');
+        const capEl = document.querySelector('[data-bind="recalc.cap"]');
+        if (balEl) balEl.textContent = fmtYen(balance);
+        if (remEl) remEl.textContent = (months / 12).toFixed(1) + '年（' + months + 'ヶ月）';
+        if (capEl) capEl.textContent = fmtYen(cap);
+
+        const tbl = document.getElementById('recalc-table');
+        if (!tbl) return;
+        tbl.innerHTML =
+          '<div class="rt-head rt-cell">想定金利</div>' +
+          '<div class="rt-head rt-cell rt-pmt">新月額</div>' +
+          '<div class="rt-head rt-cell rt-delta">現在比</div>';
+
+        FACTS.loan.recalcScenarios.forEach(({ label, rate }) => {
+          const r = Engine.recalculatedPayment(rate);
+          const delta = r.actual - current;
+          const sign = delta >= 0 ? '+' : '−';
+          const deltaStr = sign + '¥' + Math.abs(Math.round(delta / 1000)) + 'K';
+          const pmtClass = r.capped ? 'rt-pmt capped' : 'rt-pmt';
+          const star = r.capped ? ' ★' : '';
+          tbl.insertAdjacentHTML('beforeend',
+            '<div class="rt-cell rt-rate">' + label + '</div>' +
+            '<div class="rt-cell ' + pmtClass + '">' + fmtYen(r.actual) + star + '</div>' +
+            '<div class="rt-cell rt-delta">' + deltaStr + '</div>'
+          );
+        });
+      }
+
       function renderBreakdown(factor) {
         const stdPrice = Engine.standardSalePrice();
         const sale = stdPrice * factor;
@@ -835,6 +958,7 @@
       }
 
       render();
+      renderRecalc();
 
       // ── Breakdown toggle wiring ──
       renderBreakdown(1.00);
